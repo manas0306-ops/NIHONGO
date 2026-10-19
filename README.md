@@ -2,18 +2,102 @@
 
 > **"Small lessons. Real Japanese. Every day."**
 
-NekoNihongo is a production-grade Japanese language learning web platform designed to take learners from zero to JLPT N1 fluency through structured, gamified, and deeply engaging pedagogical modules.
+NekoNihongo is a production-oriented Japanese language learning web application built with **Next.js 15 (App Router)**, **React 19**, **TypeScript**, **Tailwind CSS**, and **Supabase / Local Engine**. It offers a structured Japanese curriculum spanning Foundations to Intermediate fluency, featuring gamified motivation mechanics, native speech synthesis, and SuperMemo SM-2 spaced repetition.
+
+GitHub Repository: [https://github.com/manas0306-ops/NIHONGO](https://github.com/manas0306-ops/NIHONGO)
 
 ---
 
-## 🌟 Key Features
+## 🌟 Key Application Modules (16 Main Navigation Areas)
 
-- **🏯 Kana Dojo**: Interactive 50-sound grids for Hiragana and Katakana with stroke order demonstrations, drawing canvas, pronunciation audio, and mastery drills.
-- **🏮 Kanji Lab**: Comprehensive Kanji repository with On/Kun readings, radical breakdown, mnemonics, stroke order, vocabulary associations, and spaced repetition flashcards.
-- **📚 Rich Graded Curriculum**: 100+ lessons spanning Foundations (Level A) to Advanced (Level E) aligned with JLPT N5 through N1.
-- **⚡ Advanced Lesson Player**: 20+ exercise types including sentence construction, audio matching, missing particle drills, typing, dialogue completion, and voice recognition.
-- **🎧 High-Fidelity Audio & Speech Recognition**: Native Japanese Web Speech synthesis with customizable speeds, browser microphone recognition, and audio-backed vocabulary.
-- **⛩️ Grammar Studio & Real-Life Stories**: Deep-dive grammar points with formation rules, politeness registers, and interactive graded reading stories with furigana toggle.
-- **🔄 Spaced Repetition System (SRS)**: SM-2 interval algorithm tracking Kana, Kanji, Vocabulary, and Grammar review queues.
-- **🎨 7 Authentic Japanese Themes**: Sakura Garden, Matcha Garden, Midnight Tokyo, Minimal Zen, Ocean Hokusai, Autumn Kyoto, and Paper Lantern with dark/light mode support.
-- **🎮 Gamification Engine**: Daily streaks, XP, mistake hearts, gem currency, daily quests, level badges, and global leaderboards.
+1. **🏠 Home / Learn**: Continue learning hero card, current unit progress, daily XP goal progress bar, streak flame status, and SRS reviews due.
+2. **🗺️ Course Map**: Interactive curriculum roadmap across 10 units and 30 lessons with unlock states and score indicators.
+3. **🏯 Kana Dojo**: Full 46 Gojūon + Dakuten + Handakuten + Yōon combinations. Includes mnemonics, stroke counts, native audio playback, and an **interactive stroke-drawing canvas**!
+4. **🏮 Kanji Lab**: Graded Kanji database (JLPT N5–N3) with On'yomi, Kun'yomi, radical breakdowns, mnemonics, example words, and **Flashcard Mode**.
+5. **📖 Vocabulary Library**: Searchable dictionary with topic tags, furigana toggles, example sentences, and audio pronunciation.
+6. **⛩️ Grammar Studio**: Formulaic formation rules, register/politeness notes, common pitfalls, and audio-backed sentence examples.
+7. **🎧 Listening Studio**: Native Japanese Web Speech synthesis, adjustable playback speeds (0.75x, 1.0x, 1.25x), and comprehension quizzes.
+8. **🎙️ Speaking Studio**: Browser microphone integration using Web Speech API, reference audio comparisons, Levenshtein transcript similarity scoring, and keyboard fallback mode.
+9. **📖 Stories & Real-Life Dialogues**: Original graded reading passages with furigana/romaji/English toggles, sentence-by-sentence audio, and comprehension quizzes.
+10. **🔄 Review Center (SRS)**: SuperMemo SM-2 spaced repetition scheduling with recall difficulty ratings (Forgot, Hard, Good, Easy) updating future intervals and ease factors.
+11. **⚡ Practice Hub**: Targeted 5-question micro-drills (Kana Speed Drill, Listening Sprint, Kanji Challenge, Grammar Repair).
+12. **🎯 Quests & Challenges**: Daily missions and weekly milestones with XP and gem rewards.
+13. **🏆 Leaderboard**: Safe cohort standings with pseudonyms, league divisions, and privacy opt-out controls.
+14. **🎖️ Achievements**: Badge showcase commemorating learning milestones (First Step, Kana Novice, Week Warrior, etc.).
+15. **👤 Profile & Analytics**: Persisted learning statistics, accuracy, study duration, completed lesson records, and confirmation-protected progress resets.
+16. **⚙️ Settings & Appearance**: 7 authentic Japanese stationery themes, dark/light/system modes, furigana toggles, and audio speeds.
+
+---
+
+## 🎨 7 Authentic Japanese Stationery Themes
+
+1. **🌸 Sakura Garden**: Blossom pink accents with warm stationery cream.
+2. **🍵 Matcha Garden**: Forest green and herbal bamboo tones.
+3. **🌃 Midnight Tokyo**: Deep indigo navy with cyber neon highlights.
+4. **🪨 Minimal Zen**: Restrained ink, neutral stone, and washi paper textures.
+5. **🌊 Ocean Hokusai**: Cerulean wave blue with sea-foam cream.
+6. **🍁 Autumn Kyoto**: Roasted chestnut, momiji maple, and warm gold.
+7. **🏮 Paper Lantern**: Warm evening amber and festive lanterns.
+
+---
+
+## 📚 Curriculum Content Metrics
+
+- **Units**: 10 comprehensive Units
+- **Lessons**: 30 structured Lessons
+- **Exercises**: 300 unique individual exercise items
+- **Exercise Types**: Multiple Choice, Word Bank Assembly, Drag-and-Drop, Fill in the Blanks, Missing Particles, Pair Matching, Listen & Select, Listen & Type, Typing Practice, Kana Recognition, Kanji Recognition, Reading Comprehension, Grammar Correction, Dialogue Completion, Conversation Response, and Drawing Canvas.
+
+---
+
+## 🚀 Getting Started
+
+### Prerequisites
+
+- Node.js 18.18+ or Node.js 20+ / 24+
+- npm (or pnpm / yarn)
+
+### 1. Install Dependencies
+
+```bash
+npm install
+```
+
+### 2. Configure Environment
+
+Copy `.env.example` to `.env.local`:
+
+```bash
+cp .env.example .env.local
+```
+
+*(Note: NekoNihongo is 100% functional out-of-the-box using the built-in Local Persistence Engine if Supabase credentials are not provided.)*
+
+### 3. Run Development Server
+
+```bash
+npm run dev
+```
+
+Open [http://localhost:3000](http://localhost:3000) in your browser.
+
+---
+
+## 🧪 Testing & Verification
+
+```bash
+# Run unit & integration tests
+npm run test
+
+# Run TypeScript strict type-checking
+npm run typecheck
+
+# Build optimized production bundle
+npm run build
+```
+
+---
+
+## 📄 License
+
+MIT © [Maanas Pandey](https://github.com/manas0306-ops)
