@@ -1,0 +1,260 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* -------------------------------------------------------------------------
+   NekoNihongo Theme System: 7 Authentic Japanese Color Palettes
+   ------------------------------------------------------------------------- */
+
+:root,
+[data-theme="sakura"] {
+  --bg-primary: #fdf8f7;
+  --bg-surface: #ffffff;
+  --bg-card: #ffffff;
+  --bg-subtle: #fbeee9;
+  --border: #f3d6cf;
+  --text-ink: #2b2221;
+  --text-subtle: #6e5855;
+  --text-muted: #9f8682;
+  --primary: #f43f5e;
+  --primary-hover: #e11d48;
+  --primary-light: #ffe4e6;
+  --primary-foreground: #ffffff;
+  --secondary: #fb7185;
+  --secondary-foreground: #ffffff;
+  --accent: #f97316;
+  --accent-hover: #ea580c;
+  --accent-foreground: #ffffff;
+  --success: #10b981;
+  --warning: #f59e0b;
+  --danger: #ef4444;
+}
+
+[data-theme="sakura"].dark {
+  --bg-primary: #181113;
+  --bg-surface: #22181b;
+  --bg-card: #281d21;
+  --bg-subtle: #36252a;
+  --border: #4d333b;
+  --text-ink: #fde8ec;
+  --text-subtle: #d8b2ba;
+  --text-muted: #9e7982;
+  --primary: #fb7185;
+  --primary-hover: #f43f5e;
+  --primary-light: #431f28;
+  --primary-foreground: #ffffff;
+}
+
+[data-theme="matcha"] {
+  --bg-primary: #f7f9f6;
+  --bg-surface: #ffffff;
+  --bg-card: #ffffff;
+  --bg-subtle: #edf3ea;
+  --border: #d4e2cf;
+  --text-ink: #1b261b;
+  --text-subtle: #495e47;
+  --text-muted: #798f77;
+  --primary: #15803d;
+  --primary-hover: #166534;
+  --primary-light: #dcfce7;
+  --primary-foreground: #ffffff;
+  --secondary: #4ade80;
+  --secondary-foreground: #14532d;
+  --accent: #84cc16;
+  --accent-hover: #65a30d;
+}
+
+[data-theme="matcha"].dark {
+  --bg-primary: #101912;
+  --bg-surface: #16241a;
+  --bg-card: #1c2e21;
+  --bg-subtle: #253d2d;
+  --border: #32533c;
+  --text-ink: #eaf5ec;
+  --text-subtle: #b3d1b8;
+  --text-muted: #799a7e;
+  --primary: #22c55e;
+  --primary-hover: #16a34a;
+  --primary-light: #1b4324;
+}
+
+[data-theme="midnight"] {
+  --bg-primary: #0a0f1d;
+  --bg-surface: #111a30;
+  --bg-card: #16223e;
+  --bg-subtle: #1e2e54;
+  --border: #283c6c;
+  --text-ink: #f0f4ff;
+  --text-subtle: #a6b8e6;
+  --text-muted: #6f82b3;
+  --primary: #06b6d4;
+  --primary-hover: #0891b2;
+  --primary-light: #164e63;
+  --primary-foreground: #ffffff;
+  --secondary: #8b5cf6;
+  --secondary-foreground: #ffffff;
+  --accent: #ec4899;
+  --accent-hover: #db2777;
+}
+
+[data-theme="zen"] {
+  --bg-primary: #faf9f6;
+  --bg-surface: #ffffff;
+  --bg-card: #ffffff;
+  --bg-subtle: #f0ece3;
+  --border: #ded8cb;
+  --text-ink: #262422;
+  --text-subtle: #57524d;
+  --text-muted: #8c857d;
+  --primary: #44403c;
+  --primary-hover: #292524;
+  --primary-light: #e7e5e4;
+  --primary-foreground: #ffffff;
+  --secondary: #78716c;
+  --secondary-foreground: #ffffff;
+  --accent: #a8a29e;
+}
+
+[data-theme="zen"].dark {
+  --bg-primary: #1c1917;
+  --bg-surface: #292524;
+  --bg-card: #332f2c;
+  --bg-subtle: #44403c;
+  --border: #57524d;
+  --text-ink: #f5f5f4;
+  --text-subtle: #d6d3d1;
+  --text-muted: #a8a29e;
+  --primary: #d6d3d1;
+  --primary-hover: #f5f5f4;
+  --primary-light: #44403c;
+  --primary-foreground: #1c1917;
+}
+
+[data-theme="ocean"] {
+  --bg-primary: #f3f8fc;
+  --bg-surface: #ffffff;
+  --bg-card: #ffffff;
+  --bg-subtle: #e2eff8;
+  --border: #c4def0;
+  --text-ink: #112233;
+  --text-subtle: #3a5673;
+  --text-muted: #728ea8;
+  --primary: #0284c7;
+  --primary-hover: #0369a1;
+  --primary-light: #e0f2fe;
+  --primary-foreground: #ffffff;
+  --secondary: #38bdf8;
+  --secondary-foreground: #0c4a6e;
+  --accent: #f59e0b;
+}
+
+[data-theme="autumn"] {
+  --bg-primary: #fdfaf6;
+  --bg-surface: #ffffff;
+  --bg-card: #ffffff;
+  --bg-subtle: #f9efe2;
+  --border: #edd7bf;
+  --text-ink: #332014;
+  --text-subtle: #6b4d3a;
+  --text-muted: #9e7960;
+  --primary: #ea580c;
+  --primary-hover: #c2410c;
+  --primary-light: #ffedd5;
+  --primary-foreground: #ffffff;
+  --secondary: #d97706;
+  --secondary-foreground: #ffffff;
+  --accent: #b45309;
+}
+
+[data-theme="autumn"].dark {
+  --bg-primary: #1c140d;
+  --bg-surface: #281c13;
+  --bg-card: #362519;
+  --bg-subtle: #4d3524;
+  --border: #63432d;
+  --text-ink: #fde8db;
+  --text-subtle: #dfba9f;
+  --text-muted: #a58169;
+  --primary: #f97316;
+  --primary-hover: #ea580c;
+  --primary-light: #522714;
+  --primary-foreground: #ffffff;
+}
+
+[data-theme="lantern"] {
+  --bg-primary: #fffaf0;
+  --bg-surface: #ffffff;
+  --bg-card: #ffffff;
+  --bg-subtle: #fff0d4;
+  --border: #fed7aa;
+  --text-ink: #38200a;
+  --text-subtle: #75481a;
+  --text-muted: #aa743c;
+  --primary: #d97706;
+  --primary-hover: #b45309;
+  --primary-light: #fef3c7;
+  --primary-foreground: #ffffff;
+  --secondary: #f59e0b;
+  --secondary-foreground: #451a03;
+  --accent: #dc2626;
+}
+
+[data-theme="lantern"].dark {
+  --bg-primary: #1f1406;
+  --bg-surface: #2c1d0a;
+  --bg-card: #3b280f;
+  --bg-subtle: #523816;
+  --border: #6b4a1f;
+  --text-ink: #fef0db;
+  --text-subtle: #e2c091;
+  --text-muted: #a8875a;
+  --primary: #f59e0b;
+  --primary-hover: #d97706;
+  --primary-light: #573307;
+  --primary-foreground: #ffffff;
+}
+
+/* -------------------------------------------------------------------------
+   Base Styles & Japanese Typography
+   ------------------------------------------------------------------------- */
+body {
+  background-color: var(--bg-primary);
+  color: var(--text-ink);
+  font-family: var(--font-sans), "Noto Sans JP", sans-serif;
+  min-height: 100vh;
+  transition: background-color 0.25s ease, color 0.25s ease;
+  overflow-x: hidden;
+}
+
+/* Washi paper subtle texture overlay */
+.washi-pattern {
+  background-image: radial-gradient(rgba(0, 0, 0, 0.03) 1px, transparent 0);
+  background-size: 24px 24px;
+}
+
+/* Ruby Furigana styling */
+ruby {
+  ruby-align: center;
+}
+rt {
+  font-size: 0.65em;
+  color: var(--primary);
+  font-weight: 500;
+  user-select: none;
+}
+
+/* Custom Scrollbars */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--text-muted);
+}

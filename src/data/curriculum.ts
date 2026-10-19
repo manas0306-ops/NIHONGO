@@ -596,7 +596,7 @@ function buildUnits5to10(): Unit[] {
         ex(`${lessonId}_e3`, "fill_blank", `Complete the sentence: "${spec.vocab[0] || "私"} ___ ${spec.verbs[0] || "あります"}。"`, u.id === "unit_5" ? "を" : u.id === "unit_6" ? "に" : u.id === "unit_7" ? "で" : "が", ["は", "を", "に", "で"], {
           explanation: "The particle indicates the grammatical relationship of the preceding noun to the verb.",
           difficulty: 2,
-          skillTag: "missing_particle",
+          skillTag: "grammar",
         })
       );
 

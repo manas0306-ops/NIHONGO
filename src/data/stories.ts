@@ -54,7 +54,8 @@ export const STORIES_DATABASE: Story[] = [
         avatar: "🐱",
         japanese: "かしこまりました。あちらに白い猫がいますよ。",
         furigana: "かしこまりました。あちらに しろ[白]い ねこ[猫]が いますよ。",
-        romaji: "Certainly. There is a white cat over there!",
+        romaji: "Kashikomarimashita. Achira ni shiroi neko ga imasu yo.",
+        english: "Certainly. There is a white cat over there!",
       },
       {
         speaker: "Kenji (健二)",
