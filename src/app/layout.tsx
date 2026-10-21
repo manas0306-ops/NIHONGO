@@ -6,12 +6,14 @@ import { Topbar } from "@/components/navigation/topbar";
 import { BottomNav } from "@/components/navigation/bottom-nav";
 import { OnboardingWizard } from "@/components/onboarding/wizard";
 
+const basePath = process.env.NEXT_PUBLIC_BASE_PATH || "";
+
 export const metadata: Metadata = {
   title: "NekoNihongo (猫日本語) — Japanese Language Learning",
   description: "Small lessons. Real Japanese. Every day. Production Japanese learning platform from zero to JLPT N1.",
-  manifest: "/manifest.json",
+  manifest: `${basePath}/manifest.json`,
   icons: {
-    icon: "/favicon.ico",
+    icon: `${basePath}/favicon.ico`,
   },
 };
 
