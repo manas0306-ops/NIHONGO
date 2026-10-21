@@ -2,9 +2,15 @@
 
 > **"Small lessons. Real Japanese. Every day."**
 
-NekoNihongo is a production-oriented Japanese language learning web application built with **Next.js 15 (App Router)**, **React 19**, **TypeScript**, **Tailwind CSS**, and **Supabase / Local Engine**. It offers a structured Japanese curriculum spanning Foundations to Intermediate fluency, featuring gamified motivation mechanics, native speech synthesis, and SuperMemo SM-2 spaced repetition.
+[![Deploy NekoNihongo Live 24x7x365](https://github.com/manas0306-ops/NIHONGO/actions/workflows/deploy.yml/badge.svg)](https://github.com/manas0306-ops/NIHONGO/actions/workflows/deploy.yml)
+[![Live 24x7x365 Status](https://img.shields.io/badge/Status-Live%2024%2F7%2F365-brightgreen)](https://manas0306-ops.github.io/NIHONGO/)
+[![GitHub Pages](https://img.shields.io/badge/Hosted%20On-GitHub%20Pages-blue)](https://manas0306-ops.github.io/NIHONGO/)
+[![Zero 404 Guarantee](https://img.shields.io/badge/Routing-Zero%20404%20SPA-orange)](https://manas0306-ops.github.io/NIHONGO/)
 
-GitHub Repository: [https://github.com/manas0306-ops/NIHONGO](https://github.com/manas0306-ops/NIHONGO)
+**🌐 Live Production Site**: [https://manas0306-ops.github.io/NIHONGO/](https://manas0306-ops.github.io/NIHONGO/)  
+**📁 GitHub Repository**: [https://github.com/manas0306-ops/NIHONGO](https://github.com/manas0306-ops/NIHONGO)
+
+NekoNihongo is a production-oriented Japanese language learning web application built with **Next.js 15 (App Router)**, **React 19**, **TypeScript**, **Tailwind CSS**, and **Supabase / Local Engine**. Hosted 24/7/365 with automated GitHub Pages edge delivery and zero-404 route handling. It offers a structured Japanese curriculum spanning Foundations to Intermediate fluency, featuring gamified motivation mechanics, native speech synthesis, and SuperMemo SM-2 spaced repetition.
 
 ---
 
