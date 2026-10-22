@@ -16,6 +16,8 @@ import { INITIAL_GAMIFICATION_STATE } from "../gamification/engine";
 interface AppContextType {
   preferences: UserPreferences;
   updatePreferences: (updates: Partial<UserPreferences>) => void;
+  isNightMode: boolean;
+  toggleDayNightMode: () => void;
   gamification: GamificationState;
   quests: DailyQuest[];
   achievements: Achievement[];
@@ -37,6 +39,7 @@ const AppContext = createContext<AppContextType | null>(null);
 
 export function AppProvider({ children }: { children: React.ReactNode }) {
   const [preferences, setPreferences] = useState<UserPreferences>(DEFAULT_PREFERENCES);
+  const [isNightMode, setIsNightMode] = useState<boolean>(false);
   const [gamification, setGamification] = useState<GamificationState>(INITIAL_GAMIFICATION_STATE);
   const [quests, setQuests] = useState<DailyQuest[]>([]);
   const [achievements, setAchievements] = useState<Achievement[]>([]);
@@ -62,7 +65,7 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     setIsLoaded(true);
   }, []);
 
-  // Theme & Dark mode sync with DOM
+  // Theme & Day/Night Mode sync with DOM
   useEffect(() => {
     if (typeof window === "undefined") return;
     const root = document.documentElement;
@@ -70,21 +73,40 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     // Set Theme
     root.setAttribute("data-theme", preferences.theme);
 
-    // Set Dark Mode
-    if (preferences.colorMode === "dark") {
+    // Calculate active night mode
+    const calculateIsNight = () => {
+      if (preferences.colorMode === "dark") return true;
+      if (preferences.colorMode === "light") return false;
+      return window.matchMedia("(prefers-color-scheme: dark)").matches;
+    };
+
+    const night = calculateIsNight();
+    setIsNightMode(night);
+
+    if (night) {
       root.classList.add("dark");
-    } else if (preferences.colorMode === "light") {
-      root.classList.remove("dark");
     } else {
-      // System mode
-      const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-      if (prefersDark) {
-        root.classList.add("dark");
-      } else {
-        root.classList.remove("dark");
-      }
+      root.classList.remove("dark");
     }
   }, [preferences.theme, preferences.colorMode]);
+
+  // Listen for OS system dark mode changes if set to system
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const media = window.matchMedia("(prefers-color-scheme: dark)");
+    const listener = (e: MediaQueryListEvent) => {
+      if (preferences.colorMode === "system") {
+        setIsNightMode(e.matches);
+        if (e.matches) {
+          document.documentElement.classList.add("dark");
+        } else {
+          document.documentElement.classList.remove("dark");
+        }
+      }
+    };
+    media.addEventListener("change", listener);
+    return () => media.removeEventListener("change", listener);
+  }, [preferences.colorMode]);
 
   const updatePreferences = (updates: Partial<UserPreferences>) => {
     setPreferences((prev) => {
@@ -93,6 +115,46 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
       return next;
     });
   };
+
+  const toggleDayNightMode = () => {
+    if (typeof window !== "undefined") {
+      // Add smooth transition animation class for 450ms
+      const root = document.documentElement;
+      root.classList.add("mode-transition");
+      setTimeout(() => {
+        root.classList.remove("mode-transition");
+      }, 450);
+    }
+
+    // Toggle between light and dark based on currently resolved night status
+    const nextMode: ColorMode = isNightMode ? "light" : "dark";
+    updatePreferences({ colorMode: nextMode });
+  };
+
+  // Global keyboard shortcut: Pressing 'D' (when not in an input/textarea) toggles Day/Night mode
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const handleKeyDown = (e: KeyboardEvent) => {
+      const target = e.target as HTMLElement | null;
+      if (
+        target &&
+        (target.tagName === "INPUT" ||
+          target.tagName === "TEXTAREA" ||
+          target.tagName === "SELECT" ||
+          target.isContentEditable)
+      ) {
+        return;
+      }
+
+      if ((e.key === "d" || e.key === "D") && !e.ctrlKey && !e.altKey && !e.metaKey) {
+        e.preventDefault();
+        toggleDayNightMode();
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [isNightMode]);
 
   const recordLessonCompletion = (params: {
     lessonId: string;
@@ -133,6 +195,8 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
       value={{
         preferences,
         updatePreferences,
+        isNightMode,
+        toggleDayNightMode,
         gamification,
         quests,
         achievements,
