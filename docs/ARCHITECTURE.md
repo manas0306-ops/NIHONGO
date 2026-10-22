@@ -10,7 +10,10 @@ NekoNihongo is a production-grade Japanese language education web platform desig
 
 - **Framework**: Next.js 15 (App Router, Server-side rendering, React 19)
 - **Language**: TypeScript in strict mode
-- **Styling**: Tailwind CSS with custom CSS variables supporting 7 Japanese Stationery themes
+- **Styling & Theme Engine**:
+  - Tailwind CSS with custom CSS variables supporting 7 authentic Japanese Stationery themes
+  - Dedicated **Day & Night Mode Engine (昼・夜モード)** with `.mode-transition` 400ms color blending
+  - Responsive segmented toggle (`DayNightToggle`) and global `[D]` keyboard shortcut listener
 - **Icons**: Lucide Icons
 - **State & Storage**:
   - `AppDataStore`: Client & Server data management with idempotency checks

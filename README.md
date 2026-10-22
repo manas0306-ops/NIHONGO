@@ -31,19 +31,28 @@ NekoNihongo is a production-oriented Japanese language learning web application 
 13. **🏆 Leaderboard**: Safe cohort standings with pseudonyms, league divisions, and privacy opt-out controls.
 14. **🎖️ Achievements**: Badge showcase commemorating learning milestones (First Step, Kana Novice, Week Warrior, etc.).
 15. **👤 Profile & Analytics**: Persisted learning statistics, accuracy, study duration, completed lesson records, and confirmation-protected progress resets.
-16. **⚙️ Settings & Appearance**: 7 authentic Japanese stationery themes, dark/light/system modes, furigana toggles, and audio speeds.
+16. **⚙️ Settings & Appearance**: 7 authentic Japanese stationery themes, Day & Night Mode (昼・夜モード), furigana toggles, and audio speeds.
 
 ---
 
-## 🎨 7 Authentic Japanese Stationery Themes
+## ☀️🌙 Day & Night Mode (昼・夜モード) & 7 Stationery Themes
 
-1. **🌸 Sakura Garden**: Blossom pink accents with warm stationery cream.
-2. **🍵 Matcha Garden**: Forest green and herbal bamboo tones.
-3. **🌃 Midnight Tokyo**: Deep indigo navy with cyber neon highlights.
-4. **🪨 Minimal Zen**: Restrained ink, neutral stone, and washi paper textures.
-5. **🌊 Ocean Hokusai**: Cerulean wave blue with sea-foam cream.
-6. **🍁 Autumn Kyoto**: Roasted chestnut, momiji maple, and warm gold.
-7. **🏮 Paper Lantern**: Warm evening amber and festive lanterns.
+NekoNihongo includes a specialized **Day & Night Mode engine** engineered for continuous day and late-night Japanese study:
+- **昼モード (Day Mode)**: Warm cream and traditional washi stationery backgrounds with dark sumi-ink typography for optimal daylight reading and high character contrast.
+- **夜モード (Night Mode)**: Deep OLED and midnight blue/slate backgrounds with gentle luminescence, pastel highlights, and zero eye fatigue for late-night Kanji drills.
+- **自動 (System Mode)**: Automatically tracks OS and browser daylight schedules.
+- **Smooth Transitions**: 400ms CSS custom-property blending (`.mode-transition`) avoids jarring color flashes when switching modes.
+- **Keyboard Shortcut**: Press **`D`** on your keyboard from any page to instantaneously toggle between Day and Night modes!
+
+### 7 Authentic Japanese Stationery Themes
+
+1. **🌸 Sakura Garden (桜の庭)**: Blossom pink accents with warm stationery cream (Day) and midnight plum (Night).
+2. **🍵 Matcha Garden (抹茶庭園)**: Forest green and herbal bamboo tones (Day) and moss night ink (Night).
+3. **🌃 Midnight Tokyo (東京ミッドナイト)**: Electric neon on dark sumi ink with daylight indigo duality.
+4. **🪨 Minimal Zen (禅の美)**: Restrained ink, neutral stone, and washi paper textures.
+5. **🌊 Ocean Hokusai (北斎の波)**: Cerulean wave blue with sea-foam cream and deep oceanic darks.
+6. **🍁 Autumn Kyoto (京都の紅葉)**: Roasted chestnut, momiji maple, and warm evening gold.
+7. **🏮 Paper Lantern (提灯の灯)**: Warm evening amber and festive glowing lanterns.
 
 ---
 
