@@ -2,16 +2,12 @@
 
 import React from "react";
 import { useApp } from "@/lib/providers/state-context";
-import { Flame, Moon, Sun, Volume2, ShieldCheck, Database } from "lucide-react";
+import { Flame, ShieldCheck, Database } from "lucide-react";
 import Link from "next/link";
+import { DayNightToggle } from "./day-night-toggle";
 
 export function Topbar() {
-  const { preferences, updatePreferences, gamification, syncStatus } = useApp();
-
-  const toggleDarkMode = () => {
-    const next = preferences.colorMode === "dark" ? "light" : "dark";
-    updatePreferences({ colorMode: next });
-  };
+  const { preferences, gamification, syncStatus } = useApp();
 
   return (
     <header className="sticky top-0 z-30 bg-surface/90 backdrop-blur-md border-b border-border px-4 py-3 flex items-center justify-between">
@@ -68,19 +64,13 @@ export function Topbar() {
           <span>{gamification.gems}</span>
         </div>
 
-        {/* Dark Mode Toggle */}
-        <button
-          onClick={toggleDarkMode}
-          className="p-2 rounded-xl text-subtle hover:bg-subtle hover:text-ink transition-colors"
-          aria-label="Toggle dark mode"
-          title="Toggle Dark / Light Mode"
-        >
-          {preferences.colorMode === "dark" ? (
-            <Sun className="w-4 h-4 text-amber-400" />
-          ) : (
-            <Moon className="w-4 h-4 text-subtle" />
-          )}
-        </button>
+        {/* Day & Night Mode Switcher */}
+        <div className="hidden sm:block">
+          <DayNightToggle variant="segmented" showLabel />
+        </div>
+        <div className="sm:hidden">
+          <DayNightToggle variant="icon" />
+        </div>
       </div>
     </header>
   );

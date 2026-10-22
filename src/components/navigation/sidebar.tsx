@@ -22,6 +22,7 @@ import {
   Sparkles,
 } from "lucide-react";
 import { useApp } from "@/lib/providers/state-context";
+import { DayNightToggle } from "./day-night-toggle";
 
 interface NavItem {
   name: string;
@@ -124,8 +125,13 @@ export function Sidebar() {
         })}
       </nav>
 
+      {/* Day / Night Mode Quick Switcher */}
+      <div className="mt-3">
+        <DayNightToggle variant="pill" />
+      </div>
+
       {/* Footer info */}
-      <div className="mt-4 pt-3 border-t border-border px-3 text-[11px] text-muted flex items-center justify-between">
+      <div className="mt-2 pt-3 border-t border-border px-3 text-[11px] text-muted flex items-center justify-between">
         <span>JLPT N5 → N1</span>
         <span>v1.0.0</span>
       </div>

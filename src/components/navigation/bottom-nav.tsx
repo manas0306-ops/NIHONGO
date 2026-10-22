@@ -22,6 +22,7 @@ import {
   User,
   Settings,
 } from "lucide-react";
+import { DayNightToggle } from "./day-night-toggle";
 
 export function BottomNav() {
   const pathname = usePathname();
@@ -91,6 +92,11 @@ export function BottomNav() {
                   </Link>
                 );
               })}
+            </div>
+
+            {/* Mobile Drawer Day & Night Mode Switcher */}
+            <div className="pt-3 mt-2 border-t border-border">
+              <DayNightToggle variant="pill" />
             </div>
           </div>
         </div>

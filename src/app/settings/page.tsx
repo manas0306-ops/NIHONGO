@@ -3,7 +3,8 @@
 import React from "react";
 import { useApp } from "@/lib/providers/state-context";
 import { ThemeId, ColorMode } from "@/types";
-import { Palette, Volume2, Type, Moon, Sun, Check, Sparkles } from "lucide-react";
+import { Palette, Volume2, Type, Moon, Sun, Check, Sparkles, Monitor, Keyboard } from "lucide-react";
+import { DayNightToggle } from "@/components/navigation/day-night-toggle";
 
 export default function SettingsPage() {
   const { preferences, updatePreferences } = useApp();
@@ -136,26 +137,128 @@ export default function SettingsPage() {
         </div>
       </div>
 
-      {/* 2. Color Mode (Light / Dark / System) */}
-      <div className="p-6 rounded-3xl bg-surface border border-border shadow-card space-y-4">
-        <h2 className="font-bold text-base text-ink flex items-center gap-2">
-          <Moon className="w-5 h-5 text-primary" />
-          <span>Appearance Mode</span>
-        </h2>
-        <div className="grid grid-cols-3 gap-3">
-          {(["light", "dark", "system"] as ColorMode[]).map((mode) => (
-            <button
-              key={mode}
-              onClick={() => updatePreferences({ colorMode: mode })}
-              className={`py-3 px-4 rounded-2xl border text-xs font-bold capitalize transition-all ${
-                preferences.colorMode === mode
-                  ? "bg-primary text-white border-primary shadow-soft"
-                  : "bg-card border-border text-subtle hover:bg-subtle hover:text-ink"
-              }`}
-            >
-              {mode} Mode
-            </button>
-          ))}
+      {/* 2. Day & Night Mode (昼夜モード切替) */}
+      <div className="p-6 sm:p-8 rounded-3xl bg-surface border border-border shadow-card space-y-6">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 border-b border-border pb-4">
+          <div>
+            <h2 className="font-bold text-base text-ink flex items-center gap-2">
+              <Sun className="w-5 h-5 text-amber-500" />
+              <span>Day & Night Mode (昼・夜モード)</span>
+            </h2>
+            <p className="text-xs text-subtle mt-0.5">
+              Comfort-crafted Japanese color profiles for bright daylight reading or midnight study.
+            </p>
+          </div>
+          <DayNightToggle variant="segmented" showLabel />
+        </div>
+
+        {/* 3 Mode Option Cards */}
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+          {/* Light / Day */}
+          <button
+            type="button"
+            onClick={() => updatePreferences({ colorMode: "light" })}
+            className={`p-4 rounded-2xl border text-left transition-all flex flex-col justify-between ${
+              preferences.colorMode === "light"
+                ? "border-amber-400 bg-amber-50/50 dark:bg-amber-950/20 shadow-soft ring-2 ring-amber-400/20"
+                : "border-border bg-card hover:bg-subtle"
+            }`}
+          >
+            <div>
+              <div className="flex items-center justify-between mb-2">
+                <div className="flex items-center gap-2 font-bold text-sm text-ink">
+                  <Sun className="w-4 h-4 text-amber-500" />
+                  <span>昼モード (Day)</span>
+                </div>
+                {preferences.colorMode === "light" && (
+                  <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-amber-500/10 text-amber-600">
+                    Active
+                  </span>
+                )}
+              </div>
+              <p className="text-xs text-subtle leading-relaxed">
+                Warm cream and washi stationery palettes. Optimized for daylight clarity and high legibility.
+              </p>
+            </div>
+            <div className="mt-3 pt-2 border-t border-border/40 text-[11px] font-medium text-amber-700 dark:text-amber-400">
+              ☀️ Sunlit Stationery
+            </div>
+          </button>
+
+          {/* Dark / Night */}
+          <button
+            type="button"
+            onClick={() => updatePreferences({ colorMode: "dark" })}
+            className={`p-4 rounded-2xl border text-left transition-all flex flex-col justify-between ${
+              preferences.colorMode === "dark"
+                ? "border-indigo-400 bg-indigo-50/50 dark:bg-indigo-950/30 shadow-soft ring-2 ring-indigo-400/20"
+                : "border-border bg-card hover:bg-subtle"
+            }`}
+          >
+            <div>
+              <div className="flex items-center justify-between mb-2">
+                <div className="flex items-center gap-2 font-bold text-sm text-ink">
+                  <Moon className="w-4 h-4 text-indigo-400" />
+                  <span>夜モード (Night)</span>
+                </div>
+                {preferences.colorMode === "dark" && (
+                  <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-indigo-500/10 text-indigo-400">
+                    Active
+                  </span>
+                )}
+              </div>
+              <p className="text-xs text-subtle leading-relaxed">
+                Deep sumi-ink and OLED backdrops with gentle contrast. Restful for nighttime reviews.
+              </p>
+            </div>
+            <div className="mt-3 pt-2 border-t border-border/40 text-[11px] font-medium text-indigo-600 dark:text-indigo-400">
+              🌙 Midnight Tokyo & Sumi Ink
+            </div>
+          </button>
+
+          {/* System */}
+          <button
+            type="button"
+            onClick={() => updatePreferences({ colorMode: "system" })}
+            className={`p-4 rounded-2xl border text-left transition-all flex flex-col justify-between ${
+              preferences.colorMode === "system"
+                ? "border-primary bg-primary-light/40 shadow-soft ring-2 ring-primary/20"
+                : "border-border bg-card hover:bg-subtle"
+            }`}
+          >
+            <div>
+              <div className="flex items-center justify-between mb-2">
+                <div className="flex items-center gap-2 font-bold text-sm text-ink">
+                  <Monitor className="w-4 h-4 text-primary" />
+                  <span>自動 (System)</span>
+                </div>
+                {preferences.colorMode === "system" && (
+                  <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-primary-light text-primary">
+                    Active
+                  </span>
+                )}
+              </div>
+              <p className="text-xs text-subtle leading-relaxed">
+                Synchronizes automatically with your device OS or browser ambient schedule.
+              </p>
+            </div>
+            <div className="mt-3 pt-2 border-t border-border/40 text-[11px] font-medium text-primary">
+              ⚡ OS Auto Sync
+            </div>
+          </button>
+        </div>
+
+        {/* Shortcut Banner */}
+        <div className="flex items-center gap-3 p-3.5 rounded-2xl bg-subtle border border-border text-xs text-subtle">
+          <div className="w-7 h-7 rounded-xl bg-card border border-border flex items-center justify-center text-ink font-bold shadow-xs">
+            <Keyboard className="w-4 h-4 text-primary" />
+          </div>
+          <div className="flex-1">
+            <span className="font-semibold text-ink">Pro Shortcut: </span>
+            <span>
+              Press the <kbd className="px-1.5 py-0.5 text-[10px] font-bold font-mono bg-card border border-border rounded shadow-xs text-ink">D</kbd> key anywhere on the platform to instantaneously toggle between Day and Night mode with silky transitions.
+            </span>
+          </div>
         </div>
       </div>
 
