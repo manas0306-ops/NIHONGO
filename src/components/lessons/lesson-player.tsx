@@ -174,18 +174,39 @@ export function LessonPlayer({ lesson, onExit, nextLessonId }: LessonPlayerProps
     }
   };
 
-  // Drawing Canvas Methods
-  const startDrawing = (e: React.MouseEvent<HTMLCanvasElement>) => {
+  // Drawing Canvas Methods (Touch & Mouse unified)
+  const getCanvasCoords = (
+    e: React.MouseEvent<HTMLCanvasElement> | React.TouchEvent<HTMLCanvasElement>
+  ) => {
+    const canvas = canvasRef.current;
+    if (!canvas) return { x: 0, y: 0 };
+    const rect = canvas.getBoundingClientRect();
+    const clientX = "touches" in e ? e.touches[0].clientX : e.clientX;
+    const clientY = "touches" in e ? e.touches[0].clientY : e.clientY;
+    const scaleX = canvas.width / rect.width;
+    const scaleY = canvas.height / rect.height;
+    return {
+      x: (clientX - rect.left) * scaleX,
+      y: (clientY - rect.top) * scaleY,
+    };
+  };
+
+  const startDrawing = (
+    e: React.MouseEvent<HTMLCanvasElement> | React.TouchEvent<HTMLCanvasElement>
+  ) => {
     const canvas = canvasRef.current;
     if (!canvas) return;
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
     setIsDrawing(true);
+    const { x, y } = getCanvasCoords(e);
     ctx.beginPath();
-    ctx.moveTo(e.nativeEvent.offsetX, e.nativeEvent.offsetY);
+    ctx.moveTo(x, y);
   };
 
-  const draw = (e: React.MouseEvent<HTMLCanvasElement>) => {
+  const draw = (
+    e: React.MouseEvent<HTMLCanvasElement> | React.TouchEvent<HTMLCanvasElement>
+  ) => {
     if (!isDrawing) return;
     const canvas = canvasRef.current;
     if (!canvas) return;
@@ -194,7 +215,8 @@ export function LessonPlayer({ lesson, onExit, nextLessonId }: LessonPlayerProps
     ctx.lineWidth = 4;
     ctx.lineCap = "round";
     ctx.strokeStyle = "#e11d48";
-    ctx.lineTo(e.nativeEvent.offsetX, e.nativeEvent.offsetY);
+    const { x, y } = getCanvasCoords(e);
+    ctx.lineTo(x, y);
     ctx.stroke();
   };
 
@@ -499,6 +521,10 @@ export function LessonPlayer({ lesson, onExit, nextLessonId }: LessonPlayerProps
                   onMouseMove={draw}
                   onMouseUp={stopDrawing}
                   onMouseLeave={stopDrawing}
+                  onTouchStart={startDrawing}
+                  onTouchMove={draw}
+                  onTouchEnd={stopDrawing}
+                  aria-label="Japanese character stroke writing canvas"
                   className="mx-auto border-2 border-dashed border-border rounded-2xl bg-white shadow-soft cursor-crosshair touch-none"
                 />
                 <button
