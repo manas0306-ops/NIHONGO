@@ -3,7 +3,9 @@
 import React, { useState } from "react";
 import { useApp } from "@/lib/providers/state-context";
 import { AbilityLevel, LearningGoal, DailyStudyTime } from "@/types";
-import { Check, ArrowRight, Sparkles, BookOpen, Clock, Target, Compass } from "lucide-react";
+import { Check, ArrowRight, Sparkles, BookOpen, Clock, Target, Compass, CheckCircle2 } from "lucide-react";
+import { CURRICULUM_UNITS } from "@/data/curriculum";
+import { AppDataStore } from "@/lib/database/store";
 
 export function OnboardingWizard() {
   const { preferences, updatePreferences } = useApp();
@@ -15,27 +17,17 @@ export function OnboardingWizard() {
   const [studyTime, setStudyTime] = useState<DailyStudyTime>(preferences.dailyStudyMinutes);
   const [xpTarget, setXpTarget] = useState<number>(preferences.dailyXpGoal);
   const [placementAnswers, setPlacementAnswers] = useState<Record<number, string>>({});
+  const [currentPlacementIdx, setCurrentPlacementIdx] = useState<number>(0);
 
   if (preferences.hasCompletedOnboarding) {
     return null; // Already completed onboarding
   }
 
-  const handleFinish = (score: number = 0) => {
-    updatePreferences({
-      abilityLevel: ability,
-      primaryGoal: goal,
-      dailyStudyMinutes: studyTime,
-      dailyXpGoal: xpTarget,
-      placementScore: score,
-      hasCompletedOnboarding: true,
-    });
-  };
-
   const abilityOptions: { id: AbilityLevel; label: string; desc: string }[] = [
     { id: "beginner", label: "Complete Beginner", desc: "No prior Japanese knowledge. Starting from zero." },
-    { id: "know_hiragana", label: "Know Hiragana", desc: "Can read basic hiragana characters." },
+    { id: "know_hiragana", label: "Know Hiragana", desc: "Can read basic hiragana phonetic characters." },
     { id: "know_kana", label: "Know Hiragana & Katakana", desc: "Comfortable reading both phonetic scripts." },
-    { id: "basic_vocab", label: "Know Basic Vocabulary", desc: "Understand simple words and common greetings." },
+    { id: "basic_vocab", label: "Know Basic Vocabulary", desc: "Understand simple words, numbers, and greetings." },
     { id: "intermediate", label: "Intermediate Learner", desc: "Studied basic grammar (JLPT N4/N3 range)." },
     { id: "advanced", label: "Advanced Learner", desc: "Polishing fluency and advanced Kanji (JLPT N2/N1)." },
   ];
@@ -57,19 +49,147 @@ export function OnboardingWizard() {
     { time: 20, label: "20+ minutes / day", intensity: "Intensive Fluency" },
   ];
 
+  // 8 Calibrated Diagnostic Questions covering the full beginner-to-intermediate spectrum
   const placementQuestions = [
-    { q: "Which sound does 'あ' represent?", options: ["a", "i", "u", "e"], correct: "a" },
-    { q: "What does 'ねこ' mean?", options: ["Cat", "Dog", "Bird", "Fish"], correct: "Cat" },
-    { q: "What particle marks the direct object in '水を飲みます'?", options: ["を", "は", "が", "に"], correct: "を" },
+    {
+      domain: "Hiragana Vowels",
+      q: "Which sound does the hiragana 'あ' represent?",
+      options: ["a", "i", "u", "e"],
+      correct: "a",
+    },
+    {
+      domain: "Katakana Loanwords",
+      q: "Which Katakana represents the loanword 'Coffee' (コーヒー)?",
+      options: ["コーヒー", "コーヒ", "ケーキ", "コーラ"],
+      correct: "コーヒー",
+    },
+    {
+      domain: "Basic Vocabulary",
+      q: "What does the word 'ねこ' (neko) mean in English?",
+      options: ["Cat", "Dog", "Bird", "Fish"],
+      correct: "Cat",
+    },
+    {
+      domain: "Grammar Particles",
+      q: "Which particle marks the direct object in '水を飲みます' (I drink water)?",
+      options: ["を", "は", "が", "に"],
+      correct: "を",
+    },
+    {
+      domain: "Polite Conjugation",
+      q: "Which polite form expresses past negative 'did not eat'?",
+      options: ["食べませんでした", "食べません", "食べました", "食べなかった"],
+      correct: "食べませんでした",
+    },
+    {
+      domain: "Kanji Recognition",
+      q: "What is the correct reading of '日本人' (Japanese person)?",
+      options: ["にほんじん", "にほんびと", "にちほんじん", "にほん"],
+      correct: "にほんじん",
+    },
+    {
+      domain: "Sentence Comprehension",
+      q: "週末に友達と映画を見ました。What did the speaker do over the weekend?",
+      options: [
+        "Watched a movie with a friend",
+        "Studied with a teacher",
+        "Went shopping alone",
+        "Ate at a restaurant",
+      ],
+      correct: "Watched a movie with a friend",
+    },
+    {
+      domain: "Te-form / Permission",
+      q: "Which pattern correctly expresses permission ('You may eat')?",
+      options: [
+        "食べてもいいです",
+        "食べなくていいです",
+        "食べてはいけません",
+        "食べるほうがいいです",
+      ],
+      correct: "食べてもいいです",
+    },
   ];
 
-  const evaluatePlacement = () => {
+  const evaluatePlacementScore = () => {
     let score = 0;
     placementQuestions.forEach((q, idx) => {
       if (placementAnswers[idx] === q.correct) score++;
     });
     return score;
   };
+
+  const getPlacementOutcome = (score: number) => {
+    if (score >= 8) {
+      return {
+        level: "advanced" as AbilityLevel,
+        label: "N4 Certified / N3 Foundation (中級準備)",
+        desc: "High comprehension across kana, kanji, particles, and compound conjugations. Initial 8 units unlocked.",
+        unlockedUnits: 8,
+      };
+    }
+    if (score >= 6) {
+      return {
+        level: "intermediate" as AbilityLevel,
+        label: "N4 Foundation (N4初級)",
+        desc: "Solid grasp of N5 particles and sentence structure. Initial 6 units unlocked.",
+        unlockedUnits: 6,
+      };
+    }
+    if (score >= 4) {
+      return {
+        level: "basic_vocab" as AbilityLevel,
+        label: "N5 Level (N5基礎完了)",
+        desc: "Comfortable with kana and basic particle usage. Initial 4 units unlocked.",
+        unlockedUnits: 4,
+      };
+    }
+    if (score >= 2) {
+      return {
+        level: "know_kana" as AbilityLevel,
+        label: "Kana Confident (仮名修得)",
+        desc: "Recognizes phonetic scripts. Units 1 and 2 unlocked.",
+        unlockedUnits: 2,
+      };
+    }
+    return {
+      level: "beginner" as AbilityLevel,
+      label: "Complete Beginner (入門ゼロスタート)",
+      desc: "Starting fresh from zero with Hiragana vowel foundations. Unit 1 unlocked.",
+      unlockedUnits: 1,
+    };
+  };
+
+  const handleFinish = (score: number = 0) => {
+    const outcome = getPlacementOutcome(score);
+    const store = AppDataStore.getInstance();
+
+    // Unlock lessons matching the calibrated level
+    const gameState = store.loadGamificationState();
+    const unlockedSet = new Set(gameState.unlockedLessons);
+
+    CURRICULUM_UNITS.slice(0, outcome.unlockedUnits).forEach((unit) => {
+      unit.lessons.forEach((l) => unlockedSet.add(l.id));
+    });
+
+    store.saveGamificationState({
+      ...gameState,
+      unlockedLessons: Array.from(unlockedSet),
+    });
+
+    updatePreferences({
+      abilityLevel: ability,
+      primaryGoal: goal,
+      dailyStudyMinutes: studyTime,
+      dailyXpGoal: xpTarget,
+      placementScore: score,
+      hasCompletedOnboarding: true,
+    });
+  };
+
+  const activeQuestion = placementQuestions[currentPlacementIdx];
+  const placementScore = evaluatePlacementScore();
+  const outcome = getPlacementOutcome(placementScore);
 
   return (
     <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-md flex items-center justify-center p-4 overflow-y-auto">
@@ -90,7 +210,7 @@ export function OnboardingWizard() {
           <div className="space-y-4">
             <div>
               <h2 className="text-xl font-bold text-ink">What is your current Japanese ability?</h2>
-              <p className="text-sm text-subtle">We'll tailor your starting lessons to match your level.</p>
+              <p className="text-sm text-subtle">We&apos;ll tailor your starting lessons to match your level.</p>
             </div>
             <div className="space-y-2.5">
               {abilityOptions.map((opt) => (
@@ -245,95 +365,159 @@ export function OnboardingWizard() {
                 onClick={() => setStep(5)}
                 className="flex-1 py-3 bg-primary hover:bg-primary-hover text-white font-bold rounded-2xl shadow-soft flex items-center justify-center gap-2"
               >
-                <span>Continue</span>
+                <span>Take Placement Test</span>
                 <ArrowRight className="w-4 h-4" />
               </button>
             </div>
           </div>
         )}
 
-        {/* STEP 5: Quick Placement Assessment */}
+        {/* STEP 5: 8-Question Adaptive Diagnostic Assessment */}
         {step === 5 && (
           <div className="space-y-4">
-            <div>
-              <h2 className="text-xl font-bold text-ink">Quick Placement Assessment (Optional)</h2>
-              <p className="text-sm text-subtle">Answer 3 rapid questions to calibrate your curriculum.</p>
+            <div className="flex items-center justify-between border-b border-border pb-3">
+              <div>
+                <span className="text-[10px] font-bold uppercase tracking-wider text-primary">
+                  Question {currentPlacementIdx + 1} of {placementQuestions.length} • {activeQuestion.domain}
+                </span>
+                <h2 className="text-lg font-bold text-ink mt-0.5">Adaptive Placement Assessment</h2>
+              </div>
+              <div className="w-24 bg-card h-2 rounded-full overflow-hidden border border-border">
+                <div
+                  className="bg-primary h-full rounded-full transition-all duration-300"
+                  style={{
+                    width: `${Math.round(((currentPlacementIdx + 1) / placementQuestions.length) * 100)}%`,
+                  }}
+                />
+              </div>
             </div>
-            <div className="space-y-4">
-              {placementQuestions.map((q, idx) => (
-                <div key={idx} className="p-3.5 rounded-2xl bg-subtle border border-border">
-                  <div className="font-semibold text-sm text-ink mb-2">
-                    {idx + 1}. {q.q}
-                  </div>
-                  <div className="grid grid-cols-2 gap-2">
-                    {q.options.map((opt) => (
-                      <button
-                        key={opt}
-                        onClick={() =>
-                          setPlacementAnswers((prev) => ({ ...prev, [idx]: opt }))
-                        }
-                        className={`py-2 px-3 rounded-xl text-xs font-semibold border transition-all ${
-                          placementAnswers[idx] === opt
-                            ? "border-primary bg-primary text-white"
-                            : "border-border bg-card hover:bg-surface text-ink"
-                        }`}
-                      >
-                        {opt}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-              ))}
+
+            <div className="p-4 rounded-2xl bg-subtle border border-border space-y-4">
+              <div className="font-bold text-sm text-ink leading-relaxed">
+                {activeQuestion.q}
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                {activeQuestion.options.map((opt) => {
+                  const isSelected = placementAnswers[currentPlacementIdx] === opt;
+                  return (
+                    <button
+                      key={opt}
+                      onClick={() =>
+                        setPlacementAnswers((prev) => ({
+                          ...prev,
+                          [currentPlacementIdx]: opt,
+                        }))
+                      }
+                      className={`p-3 rounded-xl text-xs font-semibold border text-left transition-all ${
+                        isSelected
+                          ? "border-primary bg-primary text-white shadow-soft"
+                          : "border-border bg-card hover:bg-surface text-ink"
+                      }`}
+                    >
+                      {opt}
+                    </button>
+                  );
+                })}
+              </div>
             </div>
+
             <div className="flex gap-3 mt-4">
-              <button
-                onClick={() => handleFinish(0)}
-                className="w-1/3 py-3 border border-border text-subtle font-semibold rounded-2xl hover:bg-subtle text-xs"
-              >
-                Skip Test
-              </button>
-              <button
-                onClick={() => setStep(6)}
-                className="flex-1 py-3 bg-primary hover:bg-primary-hover text-white font-bold rounded-2xl shadow-soft flex items-center justify-center gap-2"
-              >
-                <span>Calculate Path</span>
-                <ArrowRight className="w-4 h-4" />
-              </button>
+              {currentPlacementIdx > 0 ? (
+                <button
+                  onClick={() => setCurrentPlacementIdx((prev) => prev - 1)}
+                  className="w-1/3 py-3 border border-border text-subtle font-semibold rounded-2xl hover:bg-subtle text-xs"
+                >
+                  Previous
+                </button>
+              ) : (
+                <button
+                  onClick={() => setStep(6)}
+                  className="w-1/3 py-3 border border-border text-subtle font-semibold rounded-2xl hover:bg-subtle text-xs"
+                >
+                  Skip Test
+                </button>
+              )}
+
+              {currentPlacementIdx + 1 < placementQuestions.length ? (
+                <button
+                  disabled={!placementAnswers[currentPlacementIdx]}
+                  onClick={() => setCurrentPlacementIdx((prev) => prev + 1)}
+                  className="flex-1 py-3 bg-primary disabled:opacity-50 hover:bg-primary-hover text-white font-bold rounded-2xl shadow-soft flex items-center justify-center gap-2"
+                >
+                  <span>Next Question</span>
+                  <ArrowRight className="w-4 h-4" />
+                </button>
+              ) : (
+                <button
+                  disabled={!placementAnswers[currentPlacementIdx]}
+                  onClick={() => setStep(6)}
+                  className="flex-1 py-3 bg-emerald-600 disabled:opacity-50 hover:bg-emerald-700 text-white font-bold rounded-2xl shadow-soft flex items-center justify-center gap-2"
+                >
+                  <span>Calculate Placement</span>
+                  <ArrowRight className="w-4 h-4" />
+                </button>
+              )}
             </div>
           </div>
         )}
 
-        {/* STEP 6: Generated Path Confirmation */}
+        {/* STEP 6: Generated Path Confirmation & Manual Override */}
         {step === 6 && (
-          <div className="space-y-6 text-center py-4">
+          <div className="space-y-6 text-center py-2">
             <div className="w-16 h-16 rounded-3xl bg-primary-light text-primary flex items-center justify-center mx-auto text-3xl shadow-soft animate-bounce">
-              🎉
+              🎓
             </div>
             <div>
-              <h2 className="text-2xl font-bold text-ink">Your Learning Path is Ready!</h2>
-              <p className="text-sm text-subtle mt-1 max-w-sm mx-auto">
-                Placement score: <span className="font-bold text-primary">{evaluatePlacement()} / 3</span>. We've customized your initial units and spaced repetition queues.
+              <h2 className="text-2xl font-bold text-ink">Calibrated Learning Path Ready!</h2>
+              <p className="text-xs text-subtle mt-1 max-w-sm mx-auto">
+                Placement score: <span className="font-bold text-primary">{placementScore} / {placementQuestions.length}</span> ({Math.round((placementScore / placementQuestions.length) * 100)}% accuracy).
               </p>
             </div>
-            <div className="p-4 rounded-2xl bg-subtle border border-border text-left space-y-2 text-xs">
-              <div className="flex justify-between">
-                <span className="text-subtle">Starting Level:</span>
-                <span className="font-bold text-ink capitalize">{ability.replace("_", " ")}</span>
+
+            {/* Diagnostic Outcome Card */}
+            <div className="p-4 rounded-2xl bg-card border border-border text-left space-y-2 text-xs">
+              <div className="flex justify-between items-center border-b border-border pb-2">
+                <span className="text-subtle font-medium">Assigned Starting Tier:</span>
+                <span className="font-bold text-primary">{outcome.label}</span>
               </div>
-              <div className="flex justify-between">
+              <p className="text-subtle leading-relaxed">{outcome.desc}</p>
+              <div className="flex justify-between pt-1">
                 <span className="text-subtle">Focus Goal:</span>
                 <span className="font-bold text-ink capitalize">{goal.replace("_", " ")}</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-subtle">Daily Target:</span>
-                <span className="font-bold text-primary">{xpTarget} XP ({studyTime} min)</span>
+                <span className="text-subtle">Daily Commitment:</span>
+                <span className="font-bold text-primary">{xpTarget} XP ({studyTime} min/day)</span>
               </div>
             </div>
+
+            {/* Manual Override Option */}
+            <div className="text-left space-y-1.5 p-3 rounded-2xl bg-subtle border border-border">
+              <span className="text-[11px] font-bold text-ink block">Want to adjust your starting level manually?</span>
+              <div className="grid grid-cols-2 gap-2 text-xs">
+                {(["beginner", "know_kana", "basic_vocab", "intermediate"] as AbilityLevel[]).map((lvl) => (
+                  <button
+                    key={lvl}
+                    type="button"
+                    onClick={() => setAbility(lvl)}
+                    className={`py-1.5 px-2.5 rounded-xl border text-center font-semibold capitalize transition-all ${
+                      ability === lvl
+                        ? "border-primary bg-primary text-white"
+                        : "border-border bg-card text-subtle hover:text-ink"
+                    }`}
+                  >
+                    {lvl.replace("_", " ")}
+                  </button>
+                ))}
+              </div>
+            </div>
+
             <button
-              onClick={() => handleFinish(evaluatePlacement())}
+              onClick={() => handleFinish(placementScore)}
               className="w-full py-4 bg-primary hover:bg-primary-hover text-white font-bold rounded-2xl shadow-soft text-base transition-all"
             >
-              Start Learning Japanese 🐾
+              Confirm Path & Start Learning 🐾
             </button>
           </div>
         )}
