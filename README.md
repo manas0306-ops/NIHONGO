@@ -14,24 +14,58 @@ NekoNihongo is a production-oriented Japanese language learning web application 
 
 ---
 
-## 🌟 Key Application Modules (16 Main Navigation Areas)
+## 🌟 Pedagogical Learning System & Navigation Architecture
 
-1. **🏠 Home / Learn**: Continue learning hero card, current unit progress, daily XP goal progress bar, streak flame status, and SRS reviews due.
-2. **🗺️ Course Map**: Interactive curriculum roadmap across 10 units and 30 lessons with unlock states and score indicators.
-3. **🏯 Kana Dojo**: Full 46 Gojūon + Dakuten + Handakuten + Yōon combinations. Includes mnemonics, stroke counts, native audio playback, and an **interactive stroke-drawing canvas**!
-4. **🏮 Kanji Lab**: Graded Kanji database (JLPT N5–N3) with On'yomi, Kun'yomi, radical breakdowns, mnemonics, example words, and **Flashcard Mode**.
-5. **📖 Vocabulary Library**: Searchable dictionary with topic tags, furigana toggles, example sentences, and audio pronunciation.
-6. **⛩️ Grammar Studio**: Formulaic formation rules, register/politeness notes, common pitfalls, and audio-backed sentence examples.
-7. **🎧 Listening Studio**: Native Japanese Web Speech synthesis, adjustable playback speeds (0.75x, 1.0x, 1.25x), and comprehension quizzes.
-8. **🎙️ Speaking Studio**: Browser microphone integration using Web Speech API, reference audio comparisons, Levenshtein transcript similarity scoring, and keyboard fallback mode.
-9. **📖 Stories & Real-Life Dialogues**: Original graded reading passages with furigana/romaji/English toggles, sentence-by-sentence audio, and comprehension quizzes.
-10. **🔄 Review Center (SRS)**: SuperMemo SM-2 spaced repetition scheduling with recall difficulty ratings (Forgot, Hard, Good, Easy) updating future intervals and ease factors.
-11. **⚡ Practice Hub**: Targeted 5-question micro-drills (Kana Speed Drill, Listening Sprint, Kanji Challenge, Grammar Repair).
-12. **🎯 Quests & Challenges**: Daily missions and weekly milestones with XP and gem rewards.
-13. **🏆 Leaderboard**: Safe cohort standings with pseudonyms, league divisions, and privacy opt-out controls.
-14. **🎖️ Achievements**: Badge showcase commemorating learning milestones (First Step, Kana Novice, Week Warrior, etc.).
-15. **👤 Profile & Analytics**: Persisted learning statistics, accuracy, study duration, completed lesson records, and confirmation-protected progress resets.
-16. **⚙️ Settings & Appearance**: 7 authentic Japanese stationery themes, Day & Night Mode (昼・夜モード), furigana toggles, and audio speeds.
+NekoNihongo is organized into **4 Clear Pedagogical Pillars** to eliminate decision fatigue and guide the learner through the optimal learning loop: **LEARN → PRACTICE → RECALL → REVIEW → TEST → ANALYZE → ADAPT → LEARN AGAIN**.
+
+### 1. 📖 LEARN (学ぶ)
+- **🏠 Home Dashboard**: Intelligent adaptive learning hub that directly answers:
+  1. *What should I study now?* (Prioritized dynamic action: Overdue SRS reviews, Weak area repair, or Next curriculum lesson).
+  2. *Why should I study it?* (Clear cognitive justification based on forgetting curve decay or repeated mistake frequency).
+  3. *What should I do next?* (Clear trajectory forward).
+- **あなたの弱点 (Active Weak Areas Diagnostic)**: Diagnoses specific linguistic error patterns (e.g. 助詞「は」vs「が」confusion, 動詞活用 te-form errors) and offers 1-click targeted repairs.
+- **🗺️ Course Map**: 10 comprehensive Units and 30 structured lessons across JLPT N5 and N4.
+- **🏯 Kana Dojo**: 46 Gojūon + Dakuten + Yōon, mnemonics, stroke diagrams, and interactive mobile-friendly touch canvas.
+- **🏮 Kanji Lab**: Graded Kanji with radicals, On/Kun readings, and flashcard practice.
+- **📖 Vocabulary Library**: Rich contextual dictionary with audio and tag filters.
+- **⛩️ Grammar Studio**: Formulaic formation rules, register/politeness notes, and **Side-by-Side Confusing Particle Comparisons** (は vs が, に vs で, から vs まで, これ vs この, ある vs いる).
+- **📖 Graded Stories**: Authentic Japanese dialogues with furigana toggles and comprehension checks.
+
+### 2. ⚡ PRACTICE (特訓)
+- **🎧 Listening Studio**: Native Web Speech synthesis with speed adjustment (0.75x, 1.0x, 1.25x) and comprehension drills.
+- **🎙️ Speaking Studio**: Transparent Web Speech recognition measuring Transcript Match (認識一致率) and confidence, with native audio comparisons, pronunciation cadence tips, and keyboard fallback mode.
+- **⚡ Practice Hub**: 5-question micro-sprints for rapid daily recall.
+
+### 3. 🔄 REVIEW (復習)
+- **🔄 Review Center (SRS)**: SuperMemo SM-2 spaced repetition scheduler calculating intervals, repetition counts, and ease factors. Features **full keyboard accessibility** (`Space` to flip, `1` Forgot, `2` Hard, `3` Good, `4` Easy, `V` to pronounce, `Esc` to exit) and content-type filters.
+
+### 4. 📊 RECORD & SETTINGS (記録・設定)
+- **👤 Profile & Learner Model**: Separates Demonstrated Retention Mastery (%) from Exposure Progress (%) and XP gamification.
+- **🎯 Quests & Challenges**: Daily quests and milestones.
+- **🏆 Leaderboard**: Privacy-safe pseudonymous leagues.
+- **🎖️ Achievements**: Milestone unlock badges.
+- **⚙️ Settings & Appearance**: 7 authentic Japanese stationery themes, Day & Night Mode (昼・夜モード), and audio preferences.
+
+---
+
+## 🎯 8-Tier Adaptive Placement Test
+
+New learners can skip foundational material or calibrate their learning path through our 8-tier adaptive assessment covering:
+1. Basic Hiragana Recognition (あ vs お)
+2. Katakana Loanwords (コーヒー)
+3. Essential Core Vocabulary (猫・いぬ)
+4. Topic vs Subject Particles (は vs が)
+5. Verb Conjugation Politeness (食べます)
+6. Foundational Kanji Readings (日本)
+7. Complex Sentence Comprehension (毎朝７時に起きて勉強します)
+8. Te-form Request Construction (待ってください)
+
+Calibrated placement recommendations place learners accurately into:
+- **Absolute Beginner (入門)**: Unit 1 Start
+- **N5 Foundations (初級・基礎)**: Units 1-2 Unlocked
+- **N5 Certified (N5 習得)**: Units 1-4 Unlocked
+- **N4 Foundations (中級準備)**: Units 1-6 Unlocked
+- **N4 Certified / N3 Aspiring (中級実践)**: Units 1-8+ Unlocked
 
 ---
 

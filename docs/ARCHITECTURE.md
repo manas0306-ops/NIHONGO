@@ -17,13 +17,32 @@ NekoNihongo is a production-grade Japanese language education web platform desig
 - **Icons**: Lucide Icons
 - **State & Storage**:
   - `AppDataStore`: Client & Server data management with idempotency checks
+  - Unified `LearnerModel`: Separates Demonstrated Retention Mastery (0-100%) from Exposure/Progress (%) and XP Gamification
+  - Active Mistake & Weak Area Tracking (`classifyMistakeConcept`, `identifyWeakAreas`)
   - Supabase PostgreSQL: Managed database with Row Level Security (RLS) policies
-  - Local Storage Persistence Engine: Fully functional offline & local fallback
+  - Local Storage Persistence Engine: Fully functional offline & local fallback (`nekonihongo_learner_model_v1`)
 - **Learning & Audio Engine**:
-  - SuperMemo SM-2 Spaced Repetition scheduling algorithm
+  - SuperMemo SM-2 Spaced Repetition scheduling algorithm with full keyboard accessibility (`Space`, `1-4`, `V`, `Esc`)
   - Web Speech Synthesis for native Japanese TTS with variable playback speed (0.75x, 1.0x, 1.25x)
-  - Web Speech Recognition with Levenshtein-based transcript comparison
-- **Testing**: Vitest, React Testing Library, JSDOM
+  - Web Speech Recognition with transparent Transcript Match (認識一致率) confidence scoring and keyboard input fallback
+  - Grammar Studio with Side-by-Side Confusing Particle Comparisons (は vs が, に vs で, から vs まで, これ vs この, ある vs いる)
+  - 8-Tier Adaptive Placement Assessment
+- **Testing & Verification**: Vitest, React Testing Library, JSDOM, 53 Automated Content & Architectural Integrity Tests
+
+---
+
+## 3. Pedagogical Architecture
+
+The application is architected around the continuous learning loop:
+**LEARN → PRACTICE → RECALL → REVIEW → TEST → ANALYZE → ADAPT → LEARN AGAIN**
+
+1. **Intelligent Dynamic Recommender**: The Home screen dynamically computes the single highest-value action by checking overdue SRS items first, unresolved weak areas second, and curriculum progression third.
+2. **Pedagogical Four Pillars**:
+   - `LEARN (学ぶ)`: Foundational input via Home, Course Map, Kana Dojo, Kanji Lab, Vocabulary Library, Grammar Studio, and Immersion Stories.
+   - `PRACTICE (特訓)`: Active output via Listening Studio, Speaking Studio, and Practice Hub.
+   - `REVIEW (復習)`: Memory consolidation via SM-2 Spaced Repetition Flashcards.
+   - `RECORD & SETTINGS (記録・設定)`: Learner model diagnostics, Achievements, Quests, Leaderboard, and Appearance controls.
+3. **Data Integrity Guarantee**: Comprehensive automated test suites ensure zero duplicate exercises, valid multiple-choice options, correct tokenized words, non-empty explanations, and JLPT consistency.
 
 ---
 
