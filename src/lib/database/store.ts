@@ -5,6 +5,9 @@ import {
   DailyQuest,
   Achievement,
   UserStats,
+  LearnerModel,
+  MistakeRecord,
+  WeakAreaSummary,
 } from "@/types";
 import {
   INITIAL_GAMIFICATION_STATE,
@@ -15,6 +18,7 @@ import {
   calculateLevel,
 } from "../gamification/engine";
 import { calculateSM2 } from "../spaced-repetition/sm2";
+import { INITIAL_LEARNER_MODEL, computeSkillMastery } from "../learning/model";
 
 const STORAGE_KEYS = {
   PREFS: "nekonihongo_user_preferences_v1",
@@ -24,6 +28,7 @@ const STORAGE_KEYS = {
   ACHIEVEMENTS: "nekonihongo_achievements_v1",
   STATS: "nekonihongo_user_stats_v1",
   COMPLETION_TXS: "nekonihongo_tx_records_v1",
+  LEARNER_MODEL: "nekonihongo_learner_model_v1",
 };
 
 export const DEFAULT_PREFERENCES: UserPreferences = {
@@ -142,6 +147,19 @@ export class AppDataStore {
 
     items[idx] = updated;
     this.saveSRSItems(items);
+
+    // Update Learner Model demonstrated retention
+    const currentModel = this.loadLearnerModel();
+    const gameState = this.loadGamificationState();
+    const completedCount = Object.keys(gameState.completedLessons).length;
+    const mastery = computeSkillMastery(items, currentModel.mistakes, completedCount);
+    this.saveLearnerModel({
+      ...currentModel,
+      skills: mastery.skills,
+      overallMastery: mastery.overallMastery,
+      progressPercentage: mastery.progressPercentage,
+    });
+
     return { updatedItem: updated, allItems: items };
   }
 
@@ -183,6 +201,80 @@ export class AppDataStore {
     } catch (e) {
       console.warn("Storage write failed", e);
     }
+  }
+
+  // Load Learner Model (Demonstrated Mastery & Mistakes)
+  public loadLearnerModel(): LearnerModel {
+    if (typeof window === "undefined") return INITIAL_LEARNER_MODEL;
+    try {
+      const data = localStorage.getItem(STORAGE_KEYS.LEARNER_MODEL);
+      return data ? { ...INITIAL_LEARNER_MODEL, ...JSON.parse(data) } : INITIAL_LEARNER_MODEL;
+    } catch {
+      return INITIAL_LEARNER_MODEL;
+    }
+  }
+
+  public saveLearnerModel(model: LearnerModel): void {
+    if (typeof window === "undefined") return;
+    try {
+      localStorage.setItem(STORAGE_KEYS.LEARNER_MODEL, JSON.stringify(model));
+    } catch (e) {
+      console.warn("Storage write failed for learner model", e);
+    }
+  }
+
+  // Record a structured pedagogical mistake
+  public recordMistake(
+    mistake: Omit<MistakeRecord, "id" | "timestamp" | "resolved" | "reviewCount">
+  ): MistakeRecord {
+    const currentModel = this.loadLearnerModel();
+    const newRecord: MistakeRecord = {
+      ...mistake,
+      id: `err_${Date.now()}_${Math.random().toString(36).slice(2, 7)}`,
+      timestamp: new Date().toISOString(),
+      resolved: false,
+      reviewCount: 0,
+    };
+
+    const updatedMistakes = [newRecord, ...currentModel.mistakes].slice(0, 100); // retain recent 100
+    const srsItems = this.loadSRSItems();
+    const gameState = this.loadGamificationState();
+    const completedCount = Object.keys(gameState.completedLessons).length;
+
+    const mastery = computeSkillMastery(srsItems, updatedMistakes, completedCount);
+    const updatedModel: LearnerModel = {
+      ...currentModel,
+      mistakes: updatedMistakes,
+      skills: mastery.skills,
+      overallMastery: mastery.overallMastery,
+      progressPercentage: mastery.progressPercentage,
+    };
+
+    this.saveLearnerModel(updatedModel);
+    return newRecord;
+  }
+
+  // Resolve mistakes by concept (e.g. after targeted practice)
+  public resolveMistakesByConcept(concept: string): void {
+    const currentModel = this.loadLearnerModel();
+    const updatedMistakes = currentModel.mistakes.map((m) =>
+      m.concept === concept ? { ...m, resolved: true, reviewCount: m.reviewCount + 1 } : m
+    );
+
+    const srsItems = this.loadSRSItems();
+    const gameState = this.loadGamificationState();
+    const completedCount = Object.keys(gameState.completedLessons).length;
+
+    const mastery = computeSkillMastery(srsItems, updatedMistakes, completedCount);
+    const updatedModel: LearnerModel = {
+      ...currentModel,
+      mistakes: updatedMistakes,
+      skills: mastery.skills,
+      overallMastery: mastery.overallMastery,
+      progressPercentage: mastery.progressPercentage,
+    };
+
+    this.saveLearnerModel(updatedModel);
   }
 
   // Record Lesson Completion with idempotency check
@@ -274,6 +366,18 @@ export class AppDataStore {
       };
     });
     this.saveAchievements(achievements);
+
+    // Update Learner Model (Demonstrated Mastery & Retention)
+    const srsItems = this.loadSRSItems();
+    const currentModel = this.loadLearnerModel();
+    const completedCount = Object.keys(completed).length;
+    const mastery = computeSkillMastery(srsItems, currentModel.mistakes, completedCount);
+    this.saveLearnerModel({
+      ...currentModel,
+      skills: mastery.skills,
+      overallMastery: mastery.overallMastery,
+      progressPercentage: mastery.progressPercentage,
+    });
 
     return { success: true, duplicate: false, updatedState };
   }

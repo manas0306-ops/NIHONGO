@@ -278,3 +278,73 @@ export interface UserStats {
   kanaMasteredCount: number;
   weeklyActivity: { date: string; xp: number; minutes: number }[];
 }
+
+export type SkillType =
+  | "kana"
+  | "kanji"
+  | "vocabulary"
+  | "grammar"
+  | "listening"
+  | "speaking"
+  | "reading";
+
+export type ErrorType =
+  | "particle_confusion"
+  | "verb_conjugation"
+  | "reading_error"
+  | "kana_confusion"
+  | "vocabulary_meaning"
+  | "audio_distinction"
+  | "keigo_register"
+  | "general_mistake";
+
+export interface MistakeRecord {
+  id: string;
+  skill: SkillType;
+  concept: string; // e.g. "は vs が", "に vs で", "さ vs き", "食べる te-form"
+  lessonId?: string;
+  questionId: string;
+  prompt: string;
+  userAnswer: string;
+  correctAnswer: string;
+  errorType: ErrorType;
+  timestamp: string;
+  severity: "low" | "medium" | "high";
+  resolved: boolean;
+  reviewCount: number;
+}
+
+export interface SkillMastery {
+  skill: SkillType;
+  level: number; // 0 to 100 percentage based on retention
+  itemsAttempted: number;
+  itemsMastered: number;
+  accuracy: number;
+  lastPracticed?: string;
+}
+
+export interface LearnerModel {
+  schemaVersion: number;
+  skills: Record<SkillType, SkillMastery>;
+  mistakes: MistakeRecord[];
+  recentPerformance: {
+    date: string;
+    accuracy: number;
+    studyMinutes: number;
+    exercisesCompleted: number;
+  }[];
+  overallMastery: number; // 0 to 100 percentage (weighted retention)
+  progressPercentage: number; // completed lessons / total lessons
+}
+
+export interface WeakAreaSummary {
+  concept: string;
+  skill: SkillType;
+  errorCount: number;
+  lastMistakeDate: string;
+  exampleProblem: {
+    prompt: string;
+    userAnswer: string;
+    correctAnswer: string;
+  };
+}

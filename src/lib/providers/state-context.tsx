@@ -9,9 +9,13 @@ import {
   SRSItem,
   ThemeId,
   ColorMode,
+  LearnerModel,
+  MistakeRecord,
+  WeakAreaSummary,
 } from "@/types";
 import { AppDataStore, DEFAULT_PREFERENCES } from "../database/store";
 import { INITIAL_GAMIFICATION_STATE } from "../gamification/engine";
+import { INITIAL_LEARNER_MODEL, identifyWeakAreas } from "../learning/model";
 
 interface AppContextType {
   preferences: UserPreferences;
@@ -19,6 +23,8 @@ interface AppContextType {
   isNightMode: boolean;
   toggleDayNightMode: () => void;
   gamification: GamificationState;
+  learnerModel: LearnerModel;
+  weakAreas: WeakAreaSummary[];
   quests: DailyQuest[];
   achievements: Achievement[];
   srsItems: SRSItem[];
@@ -30,6 +36,10 @@ interface AppContextType {
     nextLessonId?: string;
   }) => { success: boolean; duplicate: boolean };
   recordSRSReview: (srsItemId: string, grade: number) => void;
+  recordMistake: (
+    mistake: Omit<MistakeRecord, "id" | "timestamp" | "resolved" | "reviewCount">
+  ) => MistakeRecord;
+  resolveMistakesByConcept: (concept: string) => void;
   resetAllProgress: () => void;
   isLoaded: boolean;
   syncStatus: "local" | "cloud";
@@ -41,6 +51,7 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
   const [preferences, setPreferences] = useState<UserPreferences>(DEFAULT_PREFERENCES);
   const [isNightMode, setIsNightMode] = useState<boolean>(false);
   const [gamification, setGamification] = useState<GamificationState>(INITIAL_GAMIFICATION_STATE);
+  const [learnerModel, setLearnerModel] = useState<LearnerModel>(INITIAL_LEARNER_MODEL);
   const [quests, setQuests] = useState<DailyQuest[]>([]);
   const [achievements, setAchievements] = useState<Achievement[]>([]);
   const [srsItems, setSrsItems] = useState<SRSItem[]>([]);
@@ -53,12 +64,14 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     const prefs = store.loadPreferences();
     const game = store.loadGamificationState();
+    const model = store.loadLearnerModel();
     const q = store.loadQuests();
     const a = store.loadAchievements();
     const s = store.loadSRSItems();
 
     setPreferences(prefs);
     setGamification(game);
+    setLearnerModel(model);
     setQuests(q);
     setAchievements(a);
     setSrsItems(s);
@@ -167,12 +180,14 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     setGamification(res.updatedState);
     setQuests(store.loadQuests());
     setAchievements(store.loadAchievements());
+    setLearnerModel(store.loadLearnerModel());
     return { success: res.success, duplicate: res.duplicate };
   };
 
   const recordSRSReview = (srsItemId: string, grade: number) => {
     const res = store.recordSRSReview(srsItemId, grade);
     setSrsItems(res.allItems);
+    setLearnerModel(store.loadLearnerModel());
     // Also reward 5 XP for reviewing
     setGamification((prev) => {
       const next = { ...prev, xp: prev.xp + 5 };
@@ -181,14 +196,30 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     });
   };
 
+  const recordMistake = (
+    mistake: Omit<MistakeRecord, "id" | "timestamp" | "resolved" | "reviewCount">
+  ): MistakeRecord => {
+    const record = store.recordMistake(mistake);
+    setLearnerModel(store.loadLearnerModel());
+    return record;
+  };
+
+  const resolveMistakesByConcept = (concept: string) => {
+    store.resolveMistakesByConcept(concept);
+    setLearnerModel(store.loadLearnerModel());
+  };
+
   const resetAllProgress = () => {
     store.resetAllProgress();
     setPreferences(DEFAULT_PREFERENCES);
     setGamification(INITIAL_GAMIFICATION_STATE);
+    setLearnerModel(INITIAL_LEARNER_MODEL);
     setQuests(store.loadQuests());
     setAchievements(store.loadAchievements());
     setSrsItems([]);
   };
+
+  const weakAreas = identifyWeakAreas(learnerModel.mistakes);
 
   return (
     <AppContext.Provider
@@ -198,11 +229,15 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
         isNightMode,
         toggleDayNightMode,
         gamification,
+        learnerModel,
+        weakAreas,
         quests,
         achievements,
         srsItems,
         recordLessonCompletion,
         recordSRSReview,
+        recordMistake,
+        resolveMistakesByConcept,
         resetAllProgress,
         isLoaded,
         syncStatus,
