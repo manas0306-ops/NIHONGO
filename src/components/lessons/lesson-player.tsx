@@ -1,9 +1,12 @@
 "use client";
 
 import React, { useState, useEffect, useRef } from "react";
-import { Lesson, Exercise, PairMatchItem } from "@/types";
+import { Lesson, Exercise, PairMatchItem, SRSItem } from "@/types";
 import { useApp } from "@/lib/providers/state-context";
 import { JapaneseAudioSynthesizer, normalizeJapaneseText } from "@/lib/audio/speech";
+import { createSRSItem } from "@/lib/spaced-repetition/sm2";
+import { classifyMistakeConcept } from "@/lib/learning/model";
+import { AppDataStore } from "@/lib/database/store";
 import {
   Volume2,
   CheckCircle2,
@@ -14,6 +17,8 @@ import {
   Sparkles,
   X,
   VolumeX,
+  Lightbulb,
+  Repeat,
 } from "lucide-react";
 import confetti from "canvas-confetti";
 
@@ -24,13 +29,15 @@ interface LessonPlayerProps {
 }
 
 export function LessonPlayer({ lesson, onExit, nextLessonId }: LessonPlayerProps) {
-  const { preferences, recordLessonCompletion } = useApp();
+  const { preferences, recordLessonCompletion, recordMistake } = useApp();
   const [currentIndex, setCurrentIndex] = useState<number>(0);
   const [selectedOption, setSelectedOption] = useState<string>("");
   const [wordBankSelected, setWordBankSelected] = useState<string[]>([]);
   const [typedInput, setTypedInput] = useState<string>("");
   const [matchedPairs, setMatchedPairs] = useState<Record<string, string>>({});
   const [selectedPairLeft, setSelectedPairLeft] = useState<string | null>(null);
+  const [submittedUserAnswer, setSubmittedUserAnswer] = useState<string>("");
+  const [enrolledSRSCount, setEnrolledSRSCount] = useState<number>(0);
 
   // Status: "answering" | "checked_correct" | "checked_incorrect" | "finished"
   const [status, setStatus] = useState<
@@ -144,12 +151,63 @@ export function LessonPlayer({ lesson, onExit, nextLessonId }: LessonPlayerProps
       isCorrect = true; // Drawing practice completed
     }
 
+    let userAnswerStr = "";
+    if (currentExercise.type === "word_bank") {
+      userAnswerStr = wordBankSelected.join("");
+    } else if (
+      currentExercise.type === "typing_practice" ||
+      currentExercise.type === "kana_to_romaji" ||
+      currentExercise.type === "listen_type"
+    ) {
+      userAnswerStr = typedInput;
+    } else if (currentExercise.type === "match_pairs") {
+      userAnswerStr = `${Object.keys(matchedPairs).length} pairs matched`;
+    } else {
+      userAnswerStr = selectedOption;
+    }
+
+    setSubmittedUserAnswer(userAnswerStr);
+
+    const expectedStr = Array.isArray(currentExercise.correctAnswer)
+      ? currentExercise.correctAnswer.join(" / ")
+      : currentExercise.correctAnswer;
+
     if (isCorrect) {
       setScore((prev) => prev + 1);
       setStatus("checked_correct");
     } else {
+      // Record pedagogical mistake into LearnerModel
+      const { concept, errorType } = classifyMistakeConcept(
+        currentExercise.prompt,
+        userAnswerStr || "None",
+        expectedStr,
+        currentExercise.skillTag
+      );
+
+      recordMistake({
+        skill: currentExercise.skillTag,
+        concept,
+        lessonId: lesson.id,
+        questionId: currentExercise.id,
+        prompt: currentExercise.prompt,
+        userAnswer: userAnswerStr || "No answer",
+        correctAnswer: expectedStr,
+        errorType,
+        severity: "medium",
+      });
+
       setStatus("checked_incorrect");
     }
+  };
+
+  const handleRetry = () => {
+    setSelectedOption("");
+    setWordBankSelected([]);
+    setTypedInput("");
+    setMatchedPairs({});
+    setSelectedPairLeft(null);
+    clearCanvas();
+    setStatus("answering");
   };
 
   const handleContinue = () => {
@@ -160,6 +218,38 @@ export function LessonPlayer({ lesson, onExit, nextLessonId }: LessonPlayerProps
       // Finish lesson
       const finalScore = Math.round(((score + (status === "checked_correct" ? 1 : 0)) / lesson.exercises.length) * 100);
       const txId = `tx_${lesson.id}_${Date.now()}`;
+
+      // Automatic Lesson-to-SRS Enrollment
+      const store = AppDataStore.getInstance();
+      const existingSRS = store.loadSRSItems();
+      const existingKeys = new Set(existingSRS.map((i) => i.key));
+      const newSRS: SRSItem[] = [];
+
+      lesson.exercises.forEach((ex) => {
+        const target = typeof ex.correctAnswer === "string" ? ex.correctAnswer : ex.correctAnswer[0];
+        if (ex.pairs) {
+          ex.pairs.forEach((pair) => {
+            const key = `pair_${pair.id}`;
+            if (!existingKeys.has(key)) {
+              newSRS.push(
+                createSRSItem("vocabulary", key, pair.japanese, pair.romaji || pair.japanese, pair.english)
+              );
+              existingKeys.add(key);
+            }
+          });
+        } else if (ex.skillTag === "vocabulary" || ex.skillTag === "kana" || ex.skillTag === "kanji") {
+          const key = `lex_${ex.id}`;
+          if (!existingKeys.has(key) && target && target.length < 15) {
+            newSRS.push(createSRSItem(ex.skillTag, key, target, target, ex.explanation.slice(0, 45)));
+            existingKeys.add(key);
+          }
+        }
+      });
+
+      if (newSRS.length > 0) {
+        store.saveSRSItems([...existingSRS, ...newSRS]);
+        setEnrolledSRSCount(newSRS.length);
+      }
 
       recordLessonCompletion({
         lessonId: lesson.id,
@@ -567,6 +657,13 @@ export function LessonPlayer({ lesson, onExit, nextLessonId }: LessonPlayerProps
             </div>
           </div>
 
+          {enrolledSRSCount > 0 && (
+            <div className="p-3.5 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 text-xs text-emerald-800 dark:text-emerald-300 max-w-sm mx-auto flex items-center justify-center gap-2">
+              <Repeat className="w-4 h-4 text-emerald-600 flex-shrink-0" />
+              <span>+{enrolledSRSCount} items enrolled into your Review Center (SM-2)!</span>
+            </div>
+          )}
+
           <button
             onClick={onExit}
             className="w-full max-w-sm py-4 bg-primary hover:bg-primary-hover text-white font-bold rounded-2xl shadow-soft text-base transition-all"
@@ -579,28 +676,55 @@ export function LessonPlayer({ lesson, onExit, nextLessonId }: LessonPlayerProps
       {/* BOTTOM ACTION BAR */}
       {status !== "intro" && status !== "finished" && (
         <div className="mt-6">
-          {/* Feedback Banner */}
+          {/* Progressive Hint Button */}
+          {status === "answering" && currentExercise?.hint && (
+            <div className="mb-3 text-center">
+              <button
+                type="button"
+                onClick={() => setShowHint(!showHint)}
+                className="text-xs text-subtle hover:text-ink font-semibold inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-subtle border border-border transition-colors"
+              >
+                <Lightbulb className="w-3.5 h-3.5 text-amber-500" />
+                <span>{showHint ? "Hide Hint" : "Need a Hint? (ヒント)"}</span>
+              </button>
+              {showHint && (
+                <div className="mt-2 p-3 rounded-xl bg-amber-500/10 border border-amber-500/20 text-xs text-amber-900 dark:text-amber-200 text-left animate-fadeIn">
+                  💡 <strong>Hint:</strong> {currentExercise.hint}
+                </div>
+              )}
+            </div>
+          )}
+
+          {/* Correct Feedback Banner */}
           {status === "checked_correct" && (
             <div className="mb-4 p-4 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-800 dark:text-emerald-300 flex items-start gap-3">
               <CheckCircle2 className="w-5 h-5 text-emerald-600 flex-shrink-0 mt-0.5" />
               <div>
-                <div className="font-bold text-sm">Correct! Great job!</div>
+                <div className="font-bold text-sm">正解！ Correct!</div>
                 <div className="text-xs mt-0.5">{currentExercise?.explanation}</div>
               </div>
             </div>
           )}
 
+          {/* Intelligent Error Feedback Banner */}
           {status === "checked_incorrect" && (
-            <div className="mb-4 p-4 rounded-2xl bg-rose-500/10 border border-rose-500/20 text-rose-800 dark:text-rose-300 flex items-start gap-3">
-              <XCircle className="w-5 h-5 text-rose-600 flex-shrink-0 mt-0.5" />
-              <div>
-                <div className="font-bold text-sm">
-                  Correct Answer:{" "}
-                  {Array.isArray(currentExercise?.correctAnswer)
-                    ? currentExercise?.correctAnswer.join(" ")
-                    : currentExercise?.correctAnswer}
+            <div className="mb-4 p-4 rounded-2xl bg-rose-500/10 border border-rose-500/20 text-rose-800 dark:text-rose-300 space-y-2">
+              <div className="flex items-start gap-3">
+                <XCircle className="w-5 h-5 text-rose-600 flex-shrink-0 mt-0.5" />
+                <div className="space-y-1">
+                  <div className="font-bold text-xs text-rose-700 dark:text-rose-400">
+                    ❌ Your answer: <span className="line-through">{submittedUserAnswer || "(none)"}</span>
+                  </div>
+                  <div className="font-bold text-sm text-emerald-700 dark:text-emerald-300">
+                    ✅ Correct:{" "}
+                    {Array.isArray(currentExercise?.correctAnswer)
+                      ? currentExercise?.correctAnswer.join(" / ")
+                      : currentExercise?.correctAnswer}
+                  </div>
                 </div>
-                <div className="text-xs mt-0.5">{currentExercise?.explanation}</div>
+              </div>
+              <div className="text-xs pt-1.5 border-t border-rose-500/20 text-subtle leading-relaxed">
+                💡 <strong>Why:</strong> {currentExercise?.explanation}
               </div>
             </div>
           )}
@@ -612,6 +736,23 @@ export function LessonPlayer({ lesson, onExit, nextLessonId }: LessonPlayerProps
             >
               Check Answer
             </button>
+          ) : status === "checked_incorrect" ? (
+            <div className="flex gap-3">
+              <button
+                onClick={handleRetry}
+                className="w-1/3 py-4 border-2 border-amber-500/40 hover:bg-amber-500/10 text-amber-700 dark:text-amber-300 font-bold rounded-2xl text-sm transition-all flex items-center justify-center gap-1.5"
+              >
+                <RotateCcw className="w-4 h-4" />
+                <span>Retry</span>
+              </button>
+              <button
+                onClick={handleContinue}
+                className="flex-1 py-4 bg-primary hover:bg-primary-hover text-white font-bold rounded-2xl shadow-soft text-base transition-all flex items-center justify-center gap-2"
+              >
+                <span>Continue</span>
+                <ArrowRight className="w-4 h-4" />
+              </button>
+            </div>
           ) : (
             <button
               onClick={handleContinue}
