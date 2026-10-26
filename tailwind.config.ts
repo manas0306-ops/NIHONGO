@@ -9,14 +9,31 @@ const config: Config = {
   darkMode: "class",
   theme: {
     extend: {
+      textColor: {
+        ink: {
+          DEFAULT: "var(--text-ink)",
+          light: "var(--text-subtle)",
+          subtle: "var(--text-subtle)",
+          muted: "var(--text-muted)",
+        },
+        subtle: "var(--text-subtle)",
+        muted: "var(--text-muted)",
+        "primary-foreground": "var(--primary-foreground)",
+      },
+      backgroundColor: {
+        subtle: "var(--bg-subtle)",
+        surface: "var(--bg-surface)",
+        card: "var(--bg-card)",
+      },
       colors: {
         background: "var(--bg-primary)",
         card: "var(--bg-card)",
         surface: "var(--bg-surface)",
-        subtle: "var(--bg-subtle)",
+        border: "var(--border)",
         ink: {
           DEFAULT: "var(--text-ink)",
           light: "var(--text-subtle)",
+          subtle: "var(--text-subtle)",
           muted: "var(--text-muted)",
         },
         primary: {
@@ -34,7 +51,6 @@ const config: Config = {
           hover: "var(--accent-hover)",
           foreground: "var(--accent-foreground)",
         },
-        border: "var(--border)",
         success: "var(--success)",
         warning: "var(--warning)",
         danger: "var(--danger)",
@@ -42,6 +58,8 @@ const config: Config = {
       fontFamily: {
         sans: [
           "var(--font-sans)",
+          "'Plus Jakarta Sans'",
+          "'Noto Sans JP'",
           "system-ui",
           "-apple-system",
           "BlinkMacSystemFont",
@@ -51,12 +69,12 @@ const config: Config = {
           "Arial",
           "'Hiragino Sans'",
           "'Hiragino Kaku Gothic ProN'",
-          "'Noto Sans JP'",
           "'Yu Gothic'",
           "Meiryo",
           "sans-serif",
         ],
         jp: [
+          "var(--font-jp)",
           "'Noto Sans JP'",
           "'Hiragino Kaku Gothic ProN'",
           "'Yu Gothic'",

@@ -13,12 +13,13 @@ describe("Content Validation & Pedagogical Data Integrity Suite", () => {
 
     it("verifies every multiple_choice and listening exercise contains valid correctAnswer in its options", () => {
       allExercises.forEach((ex) => {
-        if (ex.type === "multiple_choice" || ex.type === "listening") {
+        if (ex.type === "multiple_choice" || ex.type === "listen_select") {
           expect(ex.options, `Exercise ${ex.id} must define options`).toBeDefined();
           expect(ex.options!.length, `Exercise ${ex.id} must have at least 2 options`).toBeGreaterThanOrEqual(2);
+          const answerStr = Array.isArray(ex.correctAnswer) ? ex.correctAnswer[0] : ex.correctAnswer;
           expect(
-            ex.options!.includes(ex.correctAnswer),
-            `Exercise ${ex.id} correctAnswer "${ex.correctAnswer}" not found in options: ${ex.options!.join(", ")}`
+            ex.options!.includes(answerStr),
+            `Exercise ${ex.id} correctAnswer "${answerStr}" not found in options: ${ex.options!.join(", ")}`
           ).toBe(true);
         }
       });
@@ -26,24 +27,24 @@ describe("Content Validation & Pedagogical Data Integrity Suite", () => {
 
     it("verifies matching_pairs exercises have valid paired items", () => {
       allExercises.forEach((ex) => {
-        if (ex.type === "matching_pairs") {
+        if (ex.type === "match_pairs") {
           expect(ex.pairs, `Matching exercise ${ex.id} must define pairs`).toBeDefined();
           expect(ex.pairs!.length, `Matching exercise ${ex.id} must have pairs`).toBeGreaterThanOrEqual(2);
           ex.pairs!.forEach((p) => {
-            expect(p.left.trim().length).toBeGreaterThan(0);
-            expect(p.right.trim().length).toBeGreaterThan(0);
+            expect(p.japanese.trim().length).toBeGreaterThan(0);
+            expect(p.english.trim().length).toBeGreaterThan(0);
           });
         }
       });
     });
 
-    it("verifies sentence_arrangement exercises contain valid tokenized words", () => {
+    it("verifies word_bank exercises contain valid tokenized words", () => {
       allExercises.forEach((ex) => {
-        if (ex.type === "sentence_arrangement") {
-          expect(ex.words, `Sentence arrangement exercise ${ex.id} must define words`).toBeDefined();
-          expect(ex.words!.length, `Sentence arrangement exercise ${ex.id} must have word chips`).toBeGreaterThanOrEqual(2);
-          // Correct answer or joined words should be non-empty
-          expect(ex.correctAnswer.trim().length).toBeGreaterThan(0);
+        if (ex.type === "word_bank") {
+          expect(ex.wordBank, `Word bank exercise ${ex.id} must define wordBank`).toBeDefined();
+          expect(ex.wordBank!.length, `Word bank exercise ${ex.id} must have word chips`).toBeGreaterThanOrEqual(2);
+          const answerStr = Array.isArray(ex.correctAnswer) ? ex.correctAnswer.join("") : ex.correctAnswer;
+          expect(answerStr.trim().length).toBeGreaterThan(0);
         }
       });
     });

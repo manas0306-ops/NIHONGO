@@ -4,8 +4,16 @@
 
 /* -------------------------------------------------------------------------
    NekoNihongo Theme System: 7 Authentic Japanese Color Palettes
+   Engineered for maximum legibility, high contrast, and distinct typography
+   hierarchy in both White (Day Mode) and Black (Night Mode) environments.
    ------------------------------------------------------------------------- */
 
+:root {
+  --font-sans: "Plus Jakarta Sans", "Noto Sans JP", system-ui, -apple-system, sans-serif;
+  --font-jp: "Noto Sans JP", "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Yu Gothic", sans-serif;
+}
+
+/* 1. SAKURA GARDEN (桜の庭) */
 :root,
 [data-theme="sakura"] {
   --bg-primary: #fdf8f7;
@@ -13,242 +21,387 @@
   --bg-card: #ffffff;
   --bg-subtle: #fbeee9;
   --border: #f3d6cf;
-  --text-ink: #2b2221;
-  --text-subtle: #6e5855;
-  --text-muted: #9f8682;
-  --primary: #f43f5e;
-  --primary-hover: #e11d48;
+  --text-ink: #1f1615;
+  --text-subtle: #553e3b;
+  --text-muted: #755b57;
+  --primary: #e11d48;
+  --primary-hover: #be123c;
   --primary-light: #ffe4e6;
   --primary-foreground: #ffffff;
   --secondary: #fb7185;
   --secondary-foreground: #ffffff;
-  --accent: #f97316;
-  --accent-hover: #ea580c;
+  --accent: #ea580c;
+  --accent-hover: #c2410c;
   --accent-foreground: #ffffff;
-  --success: #10b981;
+  --success: #15803d;
+  --warning: #b45309;
+  --danger: #dc2626;
+}
+
+:root.dark,
+.dark,
+[data-theme="sakura"].dark,
+.dark[data-theme="sakura"],
+.dark [data-theme="sakura"] {
+  --bg-primary: #120b0d;
+  --bg-surface: #1a1014;
+  --bg-card: #22151a;
+  --bg-subtle: #301e25;
+  --border: #4d2f39;
+  --text-ink: #fff0f3;
+  --text-subtle: #f2c2cc;
+  --text-muted: #c498a3;
+  --primary: #f43f5e;
+  --primary-hover: #e11d48;
+  --primary-light: #3d1b24;
+  --primary-foreground: #ffffff;
+  --secondary: #fb7185;
+  --secondary-foreground: #ffffff;
+  --accent: #fb923c;
+  --accent-hover: #f97316;
+  --accent-foreground: #120b0d;
+  --success: #22c55e;
   --warning: #f59e0b;
   --danger: #ef4444;
 }
 
-[data-theme="sakura"].dark {
-  --bg-primary: #181113;
-  --bg-surface: #22181b;
-  --bg-card: #281d21;
-  --bg-subtle: #36252a;
-  --border: #4d333b;
-  --text-ink: #fde8ec;
-  --text-subtle: #d8b2ba;
-  --text-muted: #9e7982;
-  --primary: #fb7185;
-  --primary-hover: #f43f5e;
-  --primary-light: #431f28;
-  --primary-foreground: #ffffff;
-}
-
+/* 2. MATCHA GARDEN (抹茶庭園) */
 [data-theme="matcha"] {
-  --bg-primary: #f7f9f6;
+  --bg-primary: #f6f8f5;
   --bg-surface: #ffffff;
   --bg-card: #ffffff;
   --bg-subtle: #edf3ea;
-  --border: #d4e2cf;
-  --text-ink: #1b261b;
-  --text-subtle: #495e47;
-  --text-muted: #798f77;
+  --border: #d2e0cd;
+  --text-ink: #111c12;
+  --text-subtle: #344c37;
+  --text-muted: #536f56;
   --primary: #15803d;
   --primary-hover: #166534;
   --primary-light: #dcfce7;
   --primary-foreground: #ffffff;
-  --secondary: #4ade80;
-  --secondary-foreground: #14532d;
-  --accent: #84cc16;
-  --accent-hover: #65a30d;
+  --secondary: #22c55e;
+  --secondary-foreground: #ffffff;
+  --accent: #65a30d;
+  --accent-hover: #4d7c0f;
+  --accent-foreground: #ffffff;
+  --success: #15803d;
+  --warning: #b45309;
+  --danger: #dc2626;
 }
 
-[data-theme="matcha"].dark {
-  --bg-primary: #101912;
-  --bg-surface: #16241a;
-  --bg-card: #1c2e21;
-  --bg-subtle: #253d2d;
-  --border: #32533c;
-  --text-ink: #eaf5ec;
-  --text-subtle: #b3d1b8;
-  --text-muted: #799a7e;
-  --primary: #22c55e;
-  --primary-hover: #16a34a;
+[data-theme="matcha"].dark,
+.dark[data-theme="matcha"],
+.dark [data-theme="matcha"] {
+  --bg-primary: #0a130c;
+  --bg-surface: #121f15;
+  --bg-card: #18291c;
+  --bg-subtle: #223827;
+  --border: #32533a;
+  --text-ink: #f0fdf4;
+  --text-subtle: #bbf7d0;
+  --text-muted: #7bbe8a;
+  --primary: #16a34a;
+  --primary-hover: #22c55e;
   --primary-light: #1b4324;
+  --primary-foreground: #ffffff;
+  --secondary: #4ade80;
+  --secondary-foreground: #0a130c;
+  --accent: #a3e635;
+  --accent-hover: #84cc16;
+  --accent-foreground: #0a130c;
+  --success: #22c55e;
+  --warning: #f59e0b;
+  --danger: #ef4444;
 }
 
+/* 3. MIDNIGHT TOKYO (東京の夜) */
 [data-theme="midnight"] {
   --bg-primary: #f8fafc;
   --bg-surface: #ffffff;
   --bg-card: #ffffff;
-  --bg-subtle: #f1f5f9;
+  --bg-subtle: #eef4fb;
   --border: #cbd5e1;
-  --text-ink: #0f172a;
-  --text-subtle: #334155;
-  --text-muted: #64748b;
+  --text-ink: #0b1329;
+  --text-subtle: #2d3b50;
+  --text-muted: #53657d;
   --primary: #0284c7;
   --primary-hover: #0369a1;
   --primary-light: #e0f2fe;
   --primary-foreground: #ffffff;
-  --secondary: #6366f1;
+  --secondary: #4f46e5;
   --secondary-foreground: #ffffff;
-  --accent: #d946ef;
-  --accent-hover: #c026d3;
+  --accent: #c026d3;
+  --accent-hover: #a21caf;
+  --accent-foreground: #ffffff;
+  --success: #15803d;
+  --warning: #b45309;
+  --danger: #dc2626;
 }
 
-[data-theme="midnight"].dark {
-  --bg-primary: #0a0f1d;
-  --bg-surface: #111a30;
-  --bg-card: #16223e;
-  --bg-subtle: #1e2e54;
-  --border: #283c6c;
-  --text-ink: #f0f4ff;
-  --text-subtle: #a6b8e6;
-  --text-muted: #6f82b3;
-  --primary: #06b6d4;
-  --primary-hover: #0891b2;
+[data-theme="midnight"].dark,
+.dark[data-theme="midnight"],
+.dark [data-theme="midnight"] {
+  --bg-primary: #060b17;
+  --bg-surface: #0c1429;
+  --bg-card: #121c38;
+  --bg-subtle: #1a284e;
+  --border: #293b6e;
+  --text-ink: #f8fafc;
+  --text-subtle: #cbd5e1;
+  --text-muted: #94a3b8;
+  --primary: #0284c7;
+  --primary-hover: #38bdf8;
   --primary-light: #164e63;
   --primary-foreground: #ffffff;
-  --secondary: #8b5cf6;
+  --secondary: #818cf8;
   --secondary-foreground: #ffffff;
-  --accent: #ec4899;
-  --accent-hover: #db2777;
+  --accent: #e879f9;
+  --accent-hover: #f0abfc;
+  --accent-foreground: #060b17;
+  --success: #22c55e;
+  --warning: #f59e0b;
+  --danger: #ef4444;
 }
 
+/* 4. MINIMAL ZEN (侘び寂び — MONOCHROME BLACK & WHITE) */
 [data-theme="zen"] {
-  --bg-primary: #faf9f6;
+  --bg-primary: #fcfbf9;
   --bg-surface: #ffffff;
   --bg-card: #ffffff;
-  --bg-subtle: #f0ece3;
-  --border: #ded8cb;
-  --text-ink: #262422;
-  --text-subtle: #57524d;
-  --text-muted: #8c857d;
-  --primary: #44403c;
-  --primary-hover: #292524;
-  --primary-light: #e7e5e4;
+  --bg-subtle: #f2efea;
+  --border: #ded9cd;
+  --text-ink: #111113;
+  --text-subtle: #3f3f46;
+  --text-muted: #5f5f68;
+  --primary: #18181b;
+  --primary-hover: #27272a;
+  --primary-light: #ece8e1;
   --primary-foreground: #ffffff;
-  --secondary: #78716c;
+  --secondary: #3f3f46;
   --secondary-foreground: #ffffff;
-  --accent: #a8a29e;
+  --accent: #71717a;
+  --accent-hover: #52525b;
+  --accent-foreground: #ffffff;
+  --success: #15803d;
+  --warning: #b45309;
+  --danger: #dc2626;
 }
 
-[data-theme="zen"].dark {
-  --bg-primary: #1c1917;
-  --bg-surface: #292524;
-  --bg-card: #332f2c;
-  --bg-subtle: #44403c;
-  --border: #57524d;
-  --text-ink: #f5f5f4;
-  --text-subtle: #d6d3d1;
-  --text-muted: #a8a29e;
-  --primary: #d6d3d1;
-  --primary-hover: #f5f5f4;
-  --primary-light: #44403c;
-  --primary-foreground: #1c1917;
+[data-theme="zen"].dark,
+.dark[data-theme="zen"],
+.dark [data-theme="zen"] {
+  --bg-primary: #09090b;
+  --bg-surface: #141417;
+  --bg-card: #18181c;
+  --bg-subtle: #242429;
+  --border: #3b3b44;
+  --text-ink: #ffffff;
+  --text-subtle: #d4d4d8;
+  --text-muted: #a1a1aa;
+  --primary: #3f3f46;
+  --primary-hover: #52525b;
+  --primary-light: #242429;
+  --primary-foreground: #ffffff;
+  --secondary: #52525b;
+  --secondary-foreground: #ffffff;
+  --accent: #a1a1aa;
+  --accent-hover: #d4d4d8;
+  --accent-foreground: #09090b;
+  --success: #22c55e;
+  --warning: #f59e0b;
+  --danger: #ef4444;
 }
 
+/* 5. OCEAN HOKUSAI (北斎の波) */
 [data-theme="ocean"] {
   --bg-primary: #f3f8fc;
   --bg-surface: #ffffff;
   --bg-card: #ffffff;
   --bg-subtle: #e2eff8;
   --border: #c4def0;
-  --text-ink: #112233;
-  --text-subtle: #3a5673;
-  --text-muted: #728ea8;
+  --text-ink: #0a1b2d;
+  --text-subtle: #274563;
+  --text-muted: #48698c;
   --primary: #0284c7;
   --primary-hover: #0369a1;
   --primary-light: #e0f2fe;
   --primary-foreground: #ffffff;
-  --secondary: #38bdf8;
-  --secondary-foreground: #0c4a6e;
-  --accent: #f59e0b;
-}
-
-[data-theme="ocean"].dark {
-  --bg-primary: #0a131f;
-  --bg-surface: #0f1d2e;
-  --bg-card: #14263b;
-  --bg-subtle: #1a324d;
-  --border: #234366;
-  --text-ink: #e6f1fc;
-  --text-subtle: #a2c4e6;
-  --text-muted: #668bb3;
-  --primary: #38bdf8;
-  --primary-hover: #0ea5e9;
-  --primary-light: #103854;
-  --primary-foreground: #0a131f;
-  --secondary: #0284c7;
+  --secondary: #0ea5e9;
   --secondary-foreground: #ffffff;
-  --accent: #fbbf24;
+  --accent: #d97706;
+  --accent-hover: #b45309;
+  --accent-foreground: #ffffff;
+  --success: #15803d;
+  --warning: #b45309;
+  --danger: #dc2626;
 }
 
+[data-theme="ocean"].dark,
+.dark[data-theme="ocean"],
+.dark [data-theme="ocean"] {
+  --bg-primary: #060e18;
+  --bg-surface: #0c1827;
+  --bg-card: #122236;
+  --bg-subtle: #192e47;
+  --border: #254366;
+  --text-ink: #f0f7ff;
+  --text-subtle: #bae0fd;
+  --text-muted: #7cb2df;
+  --primary: #0284c7;
+  --primary-hover: #38bdf8;
+  --primary-light: #163654;
+  --primary-foreground: #ffffff;
+  --secondary: #38bdf8;
+  --secondary-foreground: #060e18;
+  --accent: #f59e0b;
+  --accent-hover: #fbbf24;
+  --accent-foreground: #060e18;
+  --success: #22c55e;
+  --warning: #f59e0b;
+  --danger: #ef4444;
+}
+
+/* 6. AUTUMN KYOTO (京都の秋) */
 [data-theme="autumn"] {
   --bg-primary: #fdfaf6;
   --bg-surface: #ffffff;
   --bg-card: #ffffff;
-  --bg-subtle: #f9efe2;
+  --bg-subtle: #faefe1;
   --border: #edd7bf;
-  --text-ink: #332014;
-  --text-subtle: #6b4d3a;
-  --text-muted: #9e7960;
-  --primary: #ea580c;
-  --primary-hover: #c2410c;
+  --text-ink: #261408;
+  --text-subtle: #51321d;
+  --text-muted: #785237;
+  --primary: #c2410c;
+  --primary-hover: #9a3412;
   --primary-light: #ffedd5;
   --primary-foreground: #ffffff;
   --secondary: #d97706;
   --secondary-foreground: #ffffff;
   --accent: #b45309;
+  --accent-hover: #92400e;
+  --accent-foreground: #ffffff;
+  --success: #15803d;
+  --warning: #b45309;
+  --danger: #dc2626;
 }
 
-[data-theme="autumn"].dark {
-  --bg-primary: #1c140d;
-  --bg-surface: #281c13;
-  --bg-card: #362519;
-  --bg-subtle: #4d3524;
-  --border: #63432d;
-  --text-ink: #fde8db;
-  --text-subtle: #dfba9f;
-  --text-muted: #a58169;
-  --primary: #f97316;
-  --primary-hover: #ea580c;
-  --primary-light: #522714;
-  --primary-foreground: #ffffff;
-}
-
-[data-theme="lantern"] {
-  --bg-primary: #fffaf0;
-  --bg-surface: #ffffff;
-  --bg-card: #ffffff;
-  --bg-subtle: #fff0d4;
-  --border: #fed7aa;
-  --text-ink: #38200a;
-  --text-subtle: #75481a;
-  --text-muted: #aa743c;
-  --primary: #d97706;
-  --primary-hover: #b45309;
-  --primary-light: #fef3c7;
+[data-theme="autumn"].dark,
+.dark[data-theme="autumn"],
+.dark [data-theme="autumn"] {
+  --bg-primary: #120b06;
+  --bg-surface: #1c1109;
+  --bg-card: #27190e;
+  --bg-subtle: #392415;
+  --border: #573721;
+  --text-ink: #fff3ea;
+  --text-subtle: #f6c8a7;
+  --text-muted: #c9936e;
+  --primary: #ea580c;
+  --primary-hover: #f97316;
+  --primary-light: #4d2311;
   --primary-foreground: #ffffff;
   --secondary: #f59e0b;
-  --secondary-foreground: #451a03;
-  --accent: #dc2626;
+  --secondary-foreground: #120b06;
+  --accent: #fbbf24;
+  --accent-hover: #fcd34d;
+  --accent-foreground: #120b06;
+  --success: #22c55e;
+  --warning: #f59e0b;
+  --danger: #ef4444;
 }
 
-[data-theme="lantern"].dark {
-  --bg-primary: #1f1406;
-  --bg-surface: #2c1d0a;
-  --bg-card: #3b280f;
-  --bg-subtle: #523816;
-  --border: #6b4a1f;
-  --text-ink: #fef0db;
-  --text-subtle: #e2c091;
-  --text-muted: #a8875a;
-  --primary: #f59e0b;
-  --primary-hover: #d97706;
-  --primary-light: #573307;
+/* 7. PAPER LANTERN (提灯の灯) */
+[data-theme="lantern"] {
+  --bg-primary: #fffbf2;
+  --bg-surface: #ffffff;
+  --bg-card: #ffffff;
+  --bg-subtle: #fef1d6;
+  --border: #fed7aa;
+  --text-ink: #261502;
+  --text-subtle: #54340d;
+  --text-muted: #7b511c;
+  --primary: #b45309;
+  --primary-hover: #92400e;
+  --primary-light: #fef3c7;
   --primary-foreground: #ffffff;
+  --secondary: #d97706;
+  --secondary-foreground: #ffffff;
+  --accent: #dc2626;
+  --accent-hover: #b91c1c;
+  --accent-foreground: #ffffff;
+  --success: #15803d;
+  --warning: #b45309;
+  --danger: #dc2626;
+}
+
+[data-theme="lantern"].dark,
+.dark[data-theme="lantern"],
+.dark [data-theme="lantern"] {
+  --bg-primary: #120a02;
+  --bg-surface: #1c1104;
+  --bg-card: #281907;
+  --bg-subtle: #3b250b;
+  --border: #5c3b12;
+  --text-ink: #fff7eb;
+  --text-subtle: #fed7aa;
+  --text-muted: #c99d63;
+  --primary: #d97706;
+  --primary-hover: #f59e0b;
+  --primary-light: #4a2804;
+  --primary-foreground: #ffffff;
+  --secondary: #f59e0b;
+  --secondary-foreground: #120a02;
+  --accent: #ef4444;
+  --accent-hover: #f87171;
+  --accent-foreground: #120a02;
+  --success: #22c55e;
+  --warning: #f59e0b;
+  --danger: #ef4444;
+}
+
+/* -------------------------------------------------------------------------
+   Explicit Typography Visibility & Contrast Guarantees
+   These ensure that no Tailwind utility misconfiguration causes text to render
+   with background-like opacity or pale invisible colors in either Day or Night mode.
+   ------------------------------------------------------------------------- */
+.text-ink {
+  color: var(--text-ink) !important;
+}
+
+.text-subtle {
+  color: var(--text-subtle) !important;
+}
+
+.text-muted {
+  color: var(--text-muted) !important;
+}
+
+.bg-subtle {
+  background-color: var(--bg-subtle) !important;
+}
+
+.bg-surface {
+  background-color: var(--bg-surface) !important;
+}
+
+.bg-card {
+  background-color: var(--bg-card) !important;
+}
+
+/* Badge and pill high-contrast enforcement */
+.bg-subtle.text-subtle,
+.bg-subtle .text-subtle {
+  color: var(--text-subtle) !important;
+}
+
+.bg-subtle.text-muted,
+.bg-subtle .text-muted {
+  color: var(--text-muted) !important;
+}
+
+.bg-primary-light.text-primary,
+.bg-primary-light .text-primary {
+  color: var(--primary) !important;
 }
 
 /* -------------------------------------------------------------------------
@@ -257,15 +410,28 @@
 body {
   background-color: var(--bg-primary);
   color: var(--text-ink);
-  font-family: var(--font-sans), "Noto Sans JP", sans-serif;
+  font-family: var(--font-sans);
   min-height: 100vh;
   transition: background-color 0.25s ease, color 0.25s ease;
   overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Japanese glyph styling */
+.font-jp {
+  font-family: var(--font-jp);
+  letter-spacing: 0.02em;
 }
 
 /* Washi paper subtle texture overlay */
 .washi-pattern {
-  background-image: radial-gradient(rgba(0, 0, 0, 0.03) 1px, transparent 0);
+  background-image: radial-gradient(rgba(0, 0, 0, 0.02) 1px, transparent 0);
+  background-size: 24px 24px;
+}
+
+.dark .washi-pattern {
+  background-image: radial-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 0);
   background-size: 24px 24px;
 }
 
@@ -276,7 +442,7 @@ ruby {
 rt {
   font-size: 0.65em;
   color: var(--primary);
-  font-weight: 500;
+  font-weight: 600;
   user-select: none;
 }
 
@@ -310,4 +476,5 @@ html.mode-transition *::after {
               box-shadow 0.35s cubic-bezier(0.4, 0, 0.2, 1) !important;
   transition-delay: 0s !important;
 }
+
 
