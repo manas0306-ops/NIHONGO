@@ -161,6 +161,12 @@ export default function KanjiLabPage() {
                 <span className="font-bold text-emerald-600 block mb-1">訓読み (Kun'yomi - Japanese reading):</span>
                 <span className="font-jp text-ink font-semibold">{selectedKanji.kunyomi.join(", ")}</span>
               </div>
+              {selectedKanji.contextualReadingGuide && (
+                <div className="p-3 rounded-xl bg-primary-light/40 border border-primary/20 text-ink">
+                  <span className="font-bold text-primary block mb-1">📖 Reading Guide & Nuance:</span>
+                  <p className="text-subtle leading-relaxed text-[11px]">{selectedKanji.contextualReadingGuide}</p>
+                </div>
+              )}
             </div>
 
             {/* Mnemonic */}

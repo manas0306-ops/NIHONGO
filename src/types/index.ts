@@ -172,7 +172,7 @@ export interface Achievement {
 
 export interface SRSItem {
   id: string;
-  type: "kana" | "kanji" | "vocabulary" | "grammar";
+  type: "kana" | "kanji" | "vocabulary" | "grammar" | "sentence" | "listening";
   key: string;
   japanese: string;
   reading: string;
@@ -184,6 +184,8 @@ export interface SRSItem {
   lastReviewedDate?: string;
   correctCount: number;
   incorrectCount: number;
+  lapses?: number;
+  history?: Array<{ date: string; grade: number; interval: number; easeFactor: number }>;
   masteryLevel: "learning" | "reviewing" | "mastered";
 }
 
@@ -199,6 +201,21 @@ export interface KanaCharacter {
   similarKana?: string[];
 }
 
+export interface KanaSpecialRule {
+  id: string;
+  title: string;
+  japaneseTitle: string;
+  summary: string;
+  ruleExplanation: string;
+  examples: {
+    japanese: string;
+    reading: string;
+    romaji: string;
+    english: string;
+    explanation: string;
+  }[];
+}
+
 export interface KanjiItem {
   character: string;
   meaning: string;
@@ -210,6 +227,7 @@ export interface KanjiItem {
   radical: string;
   parts: string[];
   mnemonic: string;
+  contextualReadingGuide?: string;
   examples: {
     japanese: string;
     reading: string;
@@ -227,14 +245,42 @@ export interface GrammarEntry {
   explanation: string;
   register: "casual" | "polite" | "formal" | "humble" | "honorific";
   commonMistakes: string;
+  usageConditions?: string[];
+  counterExamples?: string[];
   examples: {
     japanese: string;
     furigana: string;
     romaji: string;
     english: string;
+    literalTranslation?: string;
     audioText?: string;
+    breakdown?: Array<{ part: string; role: string }>;
   }[];
   relatedGrammar?: string[];
+}
+
+export interface PlacementQuestion {
+  id: string;
+  domain: "hiragana" | "katakana" | "vocabulary" | "grammar" | "kanji" | "reading" | "listening" | "sentence";
+  domainLabel: string;
+  difficulty: 1 | 2 | 3; // 1: Foundational, 2: Standard N5, 3: Advanced N5 / N4
+  prompt: string;
+  audioPrompt?: string;
+  options: string[];
+  correct: string;
+  explanation: string;
+}
+
+export interface PlacementAssessmentResult {
+  totalAnswered: number;
+  score: number;
+  accuracy: number;
+  level: AbilityLevel;
+  recommendedUnitId: string;
+  unlockedUnits: number;
+  domainBreakdown: Record<string, { attempted: number; correct: number }>;
+  placementSummary: string;
+  disclaimer: string;
 }
 
 export interface StoryDialogueLine {

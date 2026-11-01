@@ -387,6 +387,18 @@ export default function GrammarStudioPage() {
               <p>{selectedGrammar.explanation}</p>
             </div>
 
+            {/* Usage Conditions */}
+            {selectedGrammar.usageConditions && selectedGrammar.usageConditions.length > 0 && (
+              <div className="space-y-1 text-xs">
+                <span className="font-bold text-ink block">Key Conditions & Rules:</span>
+                <ul className="list-disc pl-4 space-y-1 text-subtle">
+                  {selectedGrammar.usageConditions.map((cond, idx) => (
+                    <li key={idx}>{cond}</li>
+                  ))}
+                </ul>
+              </div>
+            )}
+
             {/* Common Mistakes Warning */}
             <div className="p-4 rounded-2xl bg-amber-500/10 border border-amber-500/20 text-amber-900 dark:text-amber-200 text-xs space-y-1">
               <div className="font-bold flex items-center gap-1.5">
@@ -395,6 +407,18 @@ export default function GrammarStudioPage() {
               </div>
               <p>{selectedGrammar.commonMistakes}</p>
             </div>
+
+            {/* Counter Examples */}
+            {selectedGrammar.counterExamples && selectedGrammar.counterExamples.length > 0 && (
+              <div className="p-3.5 rounded-2xl bg-card border border-border text-xs space-y-1">
+                <span className="font-bold text-primary block">Counter-Examples & Boundary Cases:</span>
+                <ul className="list-disc pl-4 space-y-1 text-subtle">
+                  {selectedGrammar.counterExamples.map((cex, idx) => (
+                    <li key={idx} className="font-jp">{cex}</li>
+                  ))}
+                </ul>
+              </div>
+            )}
 
             {/* Examples Sentences */}
             <div className="space-y-3 pt-3 border-t border-border">
@@ -408,6 +432,9 @@ export default function GrammarStudioPage() {
                     <div className="space-y-1">
                       <div className="font-jp font-bold text-sm text-ink">{ex.japanese}</div>
                       <div className="text-xs text-subtle font-medium">{ex.english}</div>
+                      {ex.literalTranslation && (
+                        <div className="text-[11px] text-muted italic">Literal: {ex.literalTranslation}</div>
+                      )}
                       <div className="text-[11px] text-muted font-mono">{ex.romaji}</div>
                     </div>
                     <button

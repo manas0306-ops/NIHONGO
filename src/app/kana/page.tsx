@@ -1,11 +1,16 @@
 "use client";
 
 import React, { useState, useRef } from "react";
-import { HIRAGANA_CHARACTERS, KATAKANA_CHARACTERS, SIMILAR_KANA_PAIRS } from "@/data/kana";
+import {
+  HIRAGANA_CHARACTERS,
+  KATAKANA_CHARACTERS,
+  SIMILAR_KANA_PAIRS,
+  KANA_SPECIAL_RULES,
+} from "@/data/kana";
 import { KanaCharacter } from "@/types";
 import { useApp } from "@/lib/providers/state-context";
 import { JapaneseAudioSynthesizer } from "@/lib/audio/speech";
-import { Volume2, RotateCcw, Sparkles, BookOpen, Layers, Edit3 } from "lucide-react";
+import { Volume2, RotateCcw, Sparkles, BookOpen, Layers, Edit3, Info } from "lucide-react";
 
 export default function KanaDojoPage() {
   const { preferences, updatePreferences } = useApp();
@@ -319,6 +324,39 @@ export default function KanaDojoPage() {
                 ))}
               </div>
               <p className="text-xs text-subtle leading-relaxed">{item.explanation}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Special Pronunciation & Script Conventions */}
+      <div className="p-6 rounded-3xl bg-surface border border-border shadow-card space-y-4">
+        <h2 className="font-bold text-base text-ink flex items-center gap-2">
+          <Info className="w-5 h-5 text-primary" />
+          <span>Special Pronunciation & Script Conventions (促音・長音・助詞)</span>
+        </h2>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          {KANA_SPECIAL_RULES.map((rule) => (
+            <div key={rule.id} className="p-4 rounded-2xl bg-subtle border border-border space-y-2 flex flex-col justify-between">
+              <div>
+                <div className="text-xs font-bold text-primary font-jp">{rule.japaneseTitle}</div>
+                <h3 className="font-bold text-sm text-ink">{rule.title}</h3>
+                <p className="text-xs text-subtle mt-1 leading-relaxed">{rule.summary}</p>
+                <div className="text-[11px] text-muted mt-2 p-2.5 rounded-xl bg-card border border-border leading-relaxed">
+                  {rule.ruleExplanation}
+                </div>
+              </div>
+              <div className="pt-2 border-t border-border space-y-1.5">
+                <span className="text-[10px] font-bold text-subtle uppercase">Examples:</span>
+                <div className="space-y-1">
+                  {rule.examples.slice(0, 3).map((ex, exIdx) => (
+                    <div key={exIdx} className="flex items-center justify-between text-xs p-1.5 rounded-lg bg-card border border-border">
+                      <span className="font-jp font-bold text-ink">{ex.japanese} ({ex.reading})</span>
+                      <span className="text-[11px] text-subtle">{ex.english}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
             </div>
           ))}
         </div>

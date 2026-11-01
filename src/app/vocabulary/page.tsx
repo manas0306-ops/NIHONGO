@@ -14,7 +14,7 @@ export default function VocabularyPage() {
 
   const synth = JapaneseAudioSynthesizer.getInstance();
 
-  const allTags = ["all", "greetings", "food", "verbs", "adjectives", "people", "daily"];
+  const allTags = ["all", "greetings", "food", "verbs", "adjectives", "people", "contrast", "time", "daily"];
 
   const filtered = VOCABULARY_DATABASE.filter((item) => {
     const matchesSearch =
@@ -158,6 +158,14 @@ export default function VocabularyPage() {
             <div className="text-xs text-subtle font-mono">{selectedItem.romaji}</div>
             <div className="text-base font-bold text-ink pt-2">{selectedItem.meaning}</div>
           </div>
+
+          {/* Nuance & Usage Distinction Note */}
+          {selectedItem.nuanceNote && (
+            <div className="p-3.5 rounded-2xl bg-primary-light/40 border border-primary/20 space-y-1 text-xs">
+              <span className="font-bold text-primary block">💡 Cultural Nuance & Usage Note:</span>
+              <p className="text-subtle leading-relaxed text-[11px]">{selectedItem.nuanceNote}</p>
+            </div>
+          )}
 
           {/* Example Sentence with Furigana */}
           <div className="space-y-2 pt-2 border-t border-border">

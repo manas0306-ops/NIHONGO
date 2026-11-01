@@ -9,16 +9,26 @@ export const GRAMMAR_DATABASE: GrammarEntry[] = [
     meaning: "A is B (Speaking of A, it is B)",
     formation: "[Noun A] + は + [Noun B / Na-adj] + です",
     explanation:
-      "The particle は (pronounced 'wa' when used as a particle) marks the topic of the sentence. です acts as a polite copula equivalent to 'to be' (is / am / are) in English.",
+      "The particle は (pronounced 'wa' when used as a particle) marks the conversational topic. です acts as a polite copula equivalent to 'to be' (is / am / are) in English.",
     register: "polite",
     commonMistakes:
-      "Pronouncing は as 'ha' instead of 'wa'. Using が when you intend to introduce a broad conversational topic.",
+      "Pronouncing は as 'ha' instead of 'wa'. Using が when you intend to introduce a broad conversational topic rather than identifying a specific actor.",
+    usageConditions: [
+      "Used for general statements, habitual actions, and established topics.",
+      "New, emphasized information comes AFTER the particle は.",
+      "Can indicate contrast between two parallel topics.",
+    ],
+    counterExamples: [
+      "誰が来ましたか？ (Who came? — Question words can never take は; use が)",
+      "猫が好きです。 (I like cats — Object of fondness takes が, not は)",
+    ],
     examples: [
       {
         japanese: "私は学生です。",
         furigana: "わたし[私]は がくせい[学生]です。",
         romaji: "Watashi wa gakusei desu.",
         english: "I am a student.",
+        literalTranslation: "As for me, student is.",
         audioText: "わたしはがくせいです。",
       },
       {
@@ -26,6 +36,7 @@ export const GRAMMAR_DATABASE: GrammarEntry[] = [
         furigana: "これは ねこ[猫]です。",
         romaji: "Kore wa neko desu.",
         english: "This is a cat.",
+        literalTranslation: "As for this, cat is.",
         audioText: "これはねこです。",
       },
       {
@@ -33,10 +44,60 @@ export const GRAMMAR_DATABASE: GrammarEntry[] = [
         furigana: "たなか[田中]さんは せんせい[先生]です。",
         romaji: "Tanaka-san wa sensei desu.",
         english: "Mr. Tanaka is a teacher.",
+        literalTranslation: "Speaking of Mr. Tanaka, teacher is.",
         audioText: "たなかさんはせんせいです。",
       },
     ],
-    relatedGrammar: ["g_ka_question", "g_mo_also"],
+    relatedGrammar: ["g_ga_subject", "g_ka_question", "g_mo_also"],
+  },
+  {
+    id: "g_ga_subject",
+    pattern: "A が B (ga)",
+    title: "Subject Identifier が",
+    level: "N5",
+    meaning: "Identifies the specific subject or agent of an action/state",
+    formation: "[Noun / Question Word] + が + [Verb / Adjective / State]",
+    explanation:
+      "The particle が identifies the subject performing an action, marks spontaneous sensory perception, answers question words (誰が, 何が), and marks the grammatical object of verbs of ability/fondness (分かる, 好き, 上手).",
+    register: "polite",
+    commonMistakes:
+      "Using は with question words (e.g. *誰は来ましたか is grammatically impossible). Always use が with question words.",
+    usageConditions: [
+      "Answers questions like 'Who did it?' or 'What is that?'",
+      "Marks the target of potential (できる), liking (好き), and existence (ある/いる).",
+      "Emphasizes the word BEFORE が.",
+    ],
+    counterExamples: [
+      "私は猫が好きです。 (私 takes は as topic; 猫 takes が as target of affection)",
+      "雨が降っています。 (Natural spontaneous phenomenon)",
+    ],
+    examples: [
+      {
+        japanese: "私が田中です。",
+        furigana: "わたし[私]が たなか[田中]です。",
+        romaji: "Watashi ga Tanaka desu.",
+        english: "I am Tanaka (I am the one you are looking for).",
+        literalTranslation: "I (specifically) am Tanaka.",
+        audioText: "わたしがたなかです。",
+      },
+      {
+        japanese: "誰が来ましたか。",
+        furigana: "だれ[誰]が き[来]ましたか。",
+        romaji: "Dare ga kimashita ka.",
+        english: "Who came?",
+        literalTranslation: "Who (specifically) arrived?",
+        audioText: "だれがきましたか。",
+      },
+      {
+        japanese: "猫が好きです。",
+        furigana: "ねこ[猫]が す[好]きです。",
+        romaji: "Neko ga suki desu.",
+        english: "I like cats.",
+        literalTranslation: "Cats are liked.",
+        audioText: "ねこがすきです。",
+      },
+    ],
+    relatedGrammar: ["g_wa_topic", "g_aru_iru"],
   },
   {
     id: "g_ka_question",
@@ -46,16 +107,21 @@ export const GRAMMAR_DATABASE: GrammarEntry[] = [
     meaning: "Is it ~? (Sentence question particle)",
     formation: "[Sentence] + か",
     explanation:
-      "Adding か (ka) at the end of a sentence turns it into a question. Japanese does not require changing word order or adding a question mark in formal writing, though a rising intonation is used.",
+      "Adding か (ka) at the end of a sentence turns it into a question. Japanese does not require altering word order or adding an English question mark in formal Japanese.",
     register: "polite",
     commonMistakes:
       "Inverting subject and verb like in English. In Japanese, simply add か at the end.",
+    usageConditions: [
+      "Placed strictly at the end of a clause or sentence.",
+      "Used in polite register with rising intonation.",
+    ],
     examples: [
       {
         japanese: "あなたは日本人ですか。",
         furigana: "あなたは にほんじん[日本人]ですか。",
         romaji: "Anata wa nihonjin desu ka.",
         english: "Are you Japanese?",
+        literalTranslation: "You Japanese person is-question?",
         audioText: "あなたはにほんじんですか。",
       },
       {
@@ -63,6 +129,7 @@ export const GRAMMAR_DATABASE: GrammarEntry[] = [
         furigana: "これは なん[何]ですか。",
         romaji: "Kore wa nan desu ka.",
         english: "What is this?",
+        literalTranslation: "As for this, what is-question?",
         audioText: "これはなんですか。",
       },
     ],
@@ -79,13 +146,18 @@ export const GRAMMAR_DATABASE: GrammarEntry[] = [
       "The particle を (written 'wo', pronounced 'o') marks the noun receiving the direct action of a transitive verb, such as eating food, drinking water, or reading a book.",
     register: "polite",
     commonMistakes:
-      "Using を with intransitive verbs like 行く (to go) or 好き (liked - which takes が).",
+      "Using を with intransitive verbs like 行く (to go) or with 好き (liked - which requires が).",
+    usageConditions: [
+      "Only attaches to nouns receiving transitive action.",
+      "Never used with copula です.",
+    ],
     examples: [
       {
         japanese: "水を飲みます。",
         furigana: "みず[水]を の[飲]みます。",
         romaji: "Mizu o nomimasu.",
         english: "I drink water.",
+        literalTranslation: "Water [object] drink.",
         audioText: "みずをのみます。",
       },
       {
@@ -93,6 +165,7 @@ export const GRAMMAR_DATABASE: GrammarEntry[] = [
         furigana: "ほん[本]を よ[読]みます。",
         romaji: "Hon o yomimasu.",
         english: "I read a book.",
+        literalTranslation: "Book [object] read.",
         audioText: "ほんをよみます。",
       },
       {
@@ -100,6 +173,7 @@ export const GRAMMAR_DATABASE: GrammarEntry[] = [
         furigana: "すし[寿司]を た[食]べます。",
         romaji: "Sushi o tabemasu.",
         english: "I eat sushi.",
+        literalTranslation: "Sushi [object] eat.",
         audioText: "すしをたべます。",
       },
     ],
@@ -108,21 +182,26 @@ export const GRAMMAR_DATABASE: GrammarEntry[] = [
   {
     id: "g_ni_direction",
     pattern: "〜に / へ (ni / e)",
-    title: "Direction & Destination Markers に & へ",
+    title: "Direction & Point in Time に & へ",
     level: "N5",
-    meaning: "To / towards a place or point in time",
-    formation: "[Place / Time] + に / へ + [Movement Verb (行く / 来る / 帰る)]",
+    meaning: "To / towards a place; at a specific point in clock time",
+    formation: "[Place / Specific Time] + に / へ + [Movement / Action Verb]",
     explanation:
-      "に indicates a specific destination or arrival point, while へ (pronounced 'e') emphasizes the direction of motion towards a destination. に is also used for specific points in time (e.g. 7時に = at 7 o'clock).",
+      "に indicates a specific destination or arrival point, while へ (pronounced 'e') emphasizes the direction of motion towards a destination. に is also used for specific points in time containing numbers (e.g. 7時に = at 7 o'clock).",
     register: "polite",
     commonMistakes:
-      "Using に for relative time words like 今日 (today) or 明日 (tomorrow). Those do not take に.",
+      "Using に for relative time words like 今日 (today), 明日 (tomorrow), or 毎朝 (every morning). Relative time words never take に.",
+    usageConditions: [
+      "Used with movement verbs (行く, 来る, 帰る).",
+      "Used with numbered clock times (7時に, 3月15日に).",
+    ],
     examples: [
       {
         japanese: "学校へ行きます。",
         furigana: "がっこう[学校]へ い[行]きます。",
         romaji: "Gakkou e ikimasu.",
         english: "I go to school.",
+        literalTranslation: "School towards go.",
         audioText: "がっこうへいきます。",
       },
       {
@@ -130,6 +209,7 @@ export const GRAMMAR_DATABASE: GrammarEntry[] = [
         furigana: "とうきょう[東京]に い[行]きます。",
         romaji: "Toukyou ni ikimasu.",
         english: "I go to Tokyo.",
+        literalTranslation: "Tokyo to go.",
         audioText: "とうきょうにいきます。",
       },
       {
@@ -137,29 +217,35 @@ export const GRAMMAR_DATABASE: GrammarEntry[] = [
         furigana: "しちじ[七時]に お[起]きます。",
         romaji: "Shichiji ni okimasu.",
         english: "I wake up at seven o'clock.",
+        literalTranslation: "Seven o'clock at wake up.",
         audioText: "しちじにおきます。",
       },
     ],
-    relatedGrammar: ["g_de_means"],
+    relatedGrammar: ["g_de_means", "g_kara_made"],
   },
   {
     id: "g_de_means",
     pattern: "〜で (de)",
     title: "Location of Action & Means Marker で",
     level: "N5",
-    meaning: "At / in (location of action); by means of / with (tool)",
+    meaning: "At / in (location of action); by means of / with (tool/vehicle)",
     formation: "[Place / Tool / Means] + で + [Action Verb]",
     explanation:
-      "で marks where an active action takes place (unlike に which marks static existence with います/あります), or the tool/vehicle used to carry out an action (e.g. 電車で = by train).",
+      "で marks where an active action takes place (unlike に which marks static existence with います/あります), or the tool/vehicle used to carry out an action (e.g. 電車で = by train, 箸で = with chopsticks).",
     register: "polite",
     commonMistakes:
-      "Confusing で (location of active event) with に (location of static presence).",
+      "Confusing で (site of active event) with に (site of static presence or movement target).",
+    usageConditions: [
+      "Requires an active verb (食べる, 勉強する, 買う, 働く).",
+      "Indicates physical instrument, transport method, or language used.",
+    ],
     examples: [
       {
         japanese: "図書館で勉強します。",
         furigana: "としょかん[図書館]で べんきょう[勉強]します。",
         romaji: "Toshokan de benkyou shimasu.",
         english: "I study at the library.",
+        literalTranslation: "Library at study do.",
         audioText: "としょかんでべんきょうします。",
       },
       {
@@ -167,38 +253,558 @@ export const GRAMMAR_DATABASE: GrammarEntry[] = [
         furigana: "はし[箸]で た[食]べます。",
         romaji: "Hashi de tabemasu.",
         english: "I eat with chopsticks.",
+        literalTranslation: "Chopsticks with eat.",
         audioText: "はしでたべます。",
+      },
+      {
+        japanese: "日本語で話しましょう。",
+        furigana: "にほんご[日本語]で はな[話]しましょう。",
+        romaji: "Nihongo de hanashimashou.",
+        english: "Let's speak in Japanese.",
+        literalTranslation: "Japanese language by means of speak-let's.",
+        audioText: "にほんごではなしましょう。",
       },
     ],
     relatedGrammar: ["g_wo_object", "g_ni_direction"],
   },
   {
-    id: "g_te_form",
-    pattern: "〜てください (te kudasai)",
-    title: "Requests with てください",
+    id: "g_kara_made",
+    pattern: "A から B まで (kara / made)",
+    title: "Starting Point から & Ending Limit まで",
     level: "N5",
-    meaning: "Please do ~",
-    formation: "[Verb te-form] + ください",
+    meaning: "From A to B (space, time, or range)",
+    formation: "[Start Point] + から + [End Point] + まで",
     explanation:
-      "Connects the versatile verb te-form with ください to make polite requests or instructions.",
+      "から denotes the origin point in space or starting boundary in time. まで marks the final destination, termination time, or upper limit.",
     register: "polite",
     commonMistakes:
-      "Using with plain dictionary form instead of properly conjugated te-form.",
+      "Confusing まで (until / up to) with までに (by / no later than a deadline).",
+    usageConditions: [
+      "Can be used together as 'A から B まで' or independently.",
+      "Applies equally to clock hours, dates, and geographic distances.",
+    ],
     examples: [
       {
-        japanese: "聞いてください。",
-        furigana: "き[聞]いてください。",
-        romaji: "Kiite kudasai.",
-        english: "Please listen.",
-        audioText: "きいてください。",
+        japanese: "東京から京都まで新幹線で行きました。",
+        furigana: "とうきょう[東京]から きょうと[京都]まで しんかんせん[新幹線]で い[行]きました。",
+        romaji: "Toukyou kara Kyouto made shinkansen de ikimashita.",
+        english: "I went from Tokyo to Kyoto by Shinkansen.",
+        literalTranslation: "Tokyo from Kyoto to Shinkansen by went.",
+        audioText: "とうきょうからきょうとまでしんかんせんでいきました。",
+      },
+      {
+        japanese: "銀行は九時から三時までです。",
+        furigana: "ぎんこう[銀行]は くじ[九時]から さんじ[三時]までです。",
+        romaji: "Ginkou wa kuji kara sanji made desu.",
+        english: "The bank is open from 9:00 to 3:00.",
+        literalTranslation: "Bank as-for 9 o'clock from 3 o'clock until is.",
+        audioText: "ぎんこうはくじからさんじまでです。",
+      },
+    ],
+    relatedGrammar: ["g_ni_direction", "g_de_means"],
+  },
+  {
+    id: "g_kore_sore_are",
+    pattern: "これ・それ・あれ (kore / sore / are)",
+    title: "Demonstrative Pronouns これ・それ・あれ",
+    level: "N5",
+    meaning: "This thing / That thing near you / That thing over there",
+    formation: "これ / それ / あれ + [Particle: は / を / が]",
+    explanation:
+      "Demonstrative pronouns stand completely alone as nouns. これ refers to something near the speaker; それ refers to something near the listener; あれ refers to something distant from both.",
+    register: "polite",
+    commonMistakes:
+      "Attaching a noun directly to これ (e.g. *これ本 is incorrect; you must say この本 or これは本です).",
+    usageConditions: [
+      "Cannot directly precede a noun; must be followed by a particle.",
+      "Pair with question word どれ (which one of three or more?).",
+    ],
+    examples: [
+      {
+        japanese: "これは私の辞書です。",
+        furigana: "これは わたし[私]の じしょ[辞書]です。",
+        romaji: "Kore wa watashi no jisho desu.",
+        english: "This is my dictionary.",
+        literalTranslation: "This my dictionary is.",
+        audioText: "これはわたしのじしょです。",
+      },
+      {
+        japanese: "それは何ですか。",
+        furigana: "それは なん[何]ですか。",
+        romaji: "Sore wa nan desu ka.",
+        english: "What is that (near you)?",
+        literalTranslation: "That what is-question?",
+        audioText: "それはなんですか。",
+      },
+    ],
+    relatedGrammar: ["g_kono_sono_ano"],
+  },
+  {
+    id: "g_kono_sono_ano",
+    pattern: "この・その・あの (kono / sono / ano)",
+    title: "Demonstrative Noun Modifiers この・その・あの",
+    level: "N5",
+    meaning: "This [noun] / That [noun] near you / That [noun] over there",
+    formation: "この / その / あの + [Noun]",
+    explanation:
+      "Pre-noun adjectivals that MUST be followed directly by a noun. この modifies nouns near speaker; その modifies nouns near listener; あの modifies nouns distant from both.",
+    register: "polite",
+    commonMistakes:
+      "Using この as a standalone subject followed by a particle (e.g. *この は is ungrammatical; must be この本は or これは).",
+    usageConditions: [
+      "Must have a noun immediately following.",
+      "Pair with question word どの (which [noun]?).",
+    ],
+    examples: [
+      {
+        japanese: "この本はとても面白いです。",
+        furigana: "この ほん[本]は とても おもしろ[面白]いです。",
+        romaji: "Kono hon wa totemo omoshiroi desu.",
+        english: "This book is very interesting.",
+        literalTranslation: "This book very interesting is.",
+        audioText: "このほんはとてもおもしろいです。",
+      },
+      {
+        japanese: "あの人は誰ですか。",
+        furigana: "あの ひと[人]は だれ[誰]ですか。",
+        romaji: "Ano hito wa dare desu ka.",
+        english: "Who is that person over there?",
+        literalTranslation: "That person who is-question?",
+        audioText: "あのひとはだれですか。",
+      },
+    ],
+    relatedGrammar: ["g_kore_sore_are"],
+  },
+  {
+    id: "g_aru_iru",
+    pattern: "あります vs います (aru / iru)",
+    title: "Existence Verbs ある vs いる",
+    level: "N5",
+    meaning: "There is / exists (Inanimate ある vs Animate いる)",
+    formation: "[Place] に [Item/Person] が [あります / います]",
+    explanation:
+      "Japanese strictly differentiates between the existence of non-living or inanimate entities (ある/あります) and sentient living things capable of autonomous movement like humans and animals (いる/います). Plants take ある.",
+    register: "polite",
+    commonMistakes:
+      "Using あります for pets or people (e.g. *猫があります is incorrect; must be 猫がいます).",
+    usageConditions: [
+      "Use あります for furniture, books, cars, buildings, plants, and abstract events (祭りがある).",
+      "Use います for people, cats, dogs, birds, and insects.",
+    ],
+    examples: [
+      {
+        japanese: "机の上に本があります。",
+        furigana: "つくえ[机]の うえ[上]に ほん[本]が あります。",
+        romaji: "Tsukue no ue ni hon ga arimasu.",
+        english: "There is a book on the desk.",
+        literalTranslation: "Desk of top at book exists (inanimate).",
+        audioText: "つくえのうえにほんがあります。",
+      },
+      {
+        japanese: "庭に猫がいます。",
+        furigana: "にわ[庭]に ねこ[猫]が います。",
+        romaji: "Niwa ni neko ga imasu.",
+        english: "There is a cat in the garden.",
+        literalTranslation: "Garden at cat exists (living).",
+        audioText: "にわにねこがいます。",
+      },
+    ],
+    relatedGrammar: ["g_ga_subject", "g_ni_direction"],
+  },
+  {
+    id: "g_te_form",
+    pattern: "〜てください (te kudasai)",
+    title: "Polite Requests with てください",
+    level: "N5",
+    meaning: "Please do ~",
+    formation: "[Verb て-form] + ください",
+    explanation:
+      "Attaching ください to the versatile verb て-form creates standard polite requests. Group 1 verbs alter stems based on final kana (-く $\\to$ -いて, -す $\\to$ -して, -む/ぶ/ぬ $\\to$ -んで, -つ/る/う $\\to$ -って).",
+    register: "polite",
+    commonMistakes:
+      "Attaching ください directly to dictionary form (e.g. *待つください is ungrammatical; must be 待ってください).",
+    usageConditions: [
+      "Standard everyday polite request in shops, classrooms, and directions.",
+      "For superior/business requests, formal keigo (お/ご〜ください) is preferred.",
+    ],
+    examples: [
+      {
+        japanese: "ちょっと待ってください。",
+        furigana: "ちょっと ま[待]ってください。",
+        romaji: "Chotto matte kudasai.",
+        english: "Please wait a moment.",
+        literalTranslation: "A moment waiting please.",
+        audioText: "ちょっとまってください。",
       },
       {
         japanese: "日本語で言ってください。",
         furigana: "にほんご[日本語]で い[言]ってください。",
         romaji: "Nihongo de itte kudasai.",
         english: "Please say it in Japanese.",
+        literalTranslation: "Japanese language in saying please.",
         audioText: "にほんごでいってください。",
       },
     ],
+    relatedGrammar: ["g_nai_form", "g_ta_form"],
+  },
+  {
+    id: "g_nai_form",
+    pattern: "〜ない / 〜ません (nai / masen)",
+    title: "Verb Negative Conjugations",
+    level: "N5",
+    meaning: "Do not / Does not do ~",
+    formation: "Group 1: [a-stem] + ない | Group 2: [stem] + ない | Irregular: しない / こない",
+    explanation:
+      "Expresses the negative present/future tense. 〜ません is standard polite speech; 〜ない is plain/casual speech and forms the base for patterns like 〜ないでください (please don't).",
+    register: "polite",
+    commonMistakes:
+      "Conjugating Group 1 ending in -う as *あない instead of わ (e.g. 買う $\\to$ 買わない, not *買あない).",
+    usageConditions: [
+      "Negative habitual actions (私は肉を食べません).",
+      "Refusal or absence of future actions.",
+    ],
+    examples: [
+      {
+        japanese: "朝ご飯を食べません。",
+        furigana: "あさ[朝]ごはんを た[食]べません。",
+        romaji: "Asagohan o tabemasen.",
+        english: "I don't eat breakfast.",
+        literalTranslation: "Breakfast [object] eat-not (polite).",
+        audioText: "あさごはんをたべません。",
+      },
+      {
+        japanese: "明日学校へ行きません。",
+        furigana: "あした[明日] がっこう[学校]へ い[行]きません。",
+        romaji: "Ashita gakkou e ikimasen.",
+        english: "I will not go to school tomorrow.",
+        literalTranslation: "Tomorrow school to go-not.",
+        audioText: "あしたがっこうへいきません。",
+      },
+    ],
+    relatedGrammar: ["g_te_form", "g_ta_form"],
+  },
+  {
+    id: "g_ta_form",
+    pattern: "〜た / 〜ました (ta / mashita)",
+    title: "Verb Past Tense Conjugations",
+    level: "N5",
+    meaning: "Did ~ (completed past action or state)",
+    formation: "[Verb te-stem with a] + た/だ (Plain) | [Verb ます-stem] + ました (Polite)",
+    explanation:
+      "The past tense marks completed actions or states. The plain past (-た) conjugates exactly like the -て form with final 'e' replaced by 'a' (食べた, 読んだ, 行った).",
+    register: "polite",
+    commonMistakes:
+      "Irregular verb 行く past form is 行った (itta), not *いいた.",
+    usageConditions: [
+      "Actions completed in the past.",
+      "Used in relative clauses to describe completed states.",
+    ],
+    examples: [
+      {
+        japanese: "昨日映画を見ました。",
+        furigana: "きのう[昨日] えいが[映画]を み[見]ました。",
+        romaji: "Kinou eiga o mimashita.",
+        english: "I watched a movie yesterday.",
+        literalTranslation: "Yesterday movie watched (polite).",
+        audioText: "きのうえいがをみました。",
+      },
+      {
+        japanese: "おいしい寿司を食べました。",
+        furigana: "おいしい すし[寿司]を た[食]べました。",
+        romaji: "Oishii sushi o tabemashita.",
+        english: "I ate delicious sushi.",
+        literalTranslation: "Delicious sushi ate.",
+        audioText: "おいしいすしをたべました。",
+      },
+    ],
+    relatedGrammar: ["g_te_form", "g_nai_form"],
+  },
+  {
+    id: "g_adj_i_conjugation",
+    pattern: "い-Adjectives (Present, Past, Negative)",
+    title: "い-Adjective Inflections",
+    level: "N5",
+    meaning: "Is ~ / Is not ~ / Was ~ / Was not ~",
+    formation: "Affirm: 〜い | Neg: 〜くない | Past: 〜かった | Past-Neg: 〜くなかった",
+    explanation:
+      "True Japanese い-adjectives conjugate directly within their word stem by dropping final -い. In polite speech, です is appended at the end without changing the adjective itself.",
+    register: "polite",
+    commonMistakes:
+      "Using ではありません with い-adjectives (e.g. *高いではありません is wrong; must be 高くないです). The irregular adjective いい conjugates as よくない / よかった.",
+    usageConditions: [
+      "Directly modifies a noun before it (高い本).",
+      "Acts as a predicate at sentence end (本が高いです).",
+    ],
+    examples: [
+      {
+        japanese: "このラーメンはおいしいです。",
+        furigana: "この ラーメンは おいしいです。",
+        romaji: "Kono raamen wa oishii desu.",
+        english: "This ramen is delicious.",
+        literalTranslation: "This ramen delicious is.",
+        audioText: "このらーめんはおいしいです。",
+      },
+      {
+        japanese: "昨日は寒くなかったです。",
+        furigana: "きのう[昨日]は さむ[寒]くなかったです。",
+        romaji: "Kinou wa samukunakatta desu.",
+        english: "Yesterday was not cold.",
+        literalTranslation: "Yesterday cold-not-past was.",
+        audioText: "きのうはさむくなかったです。",
+      },
+    ],
+    relatedGrammar: ["g_adj_na_conjugation"],
+  },
+  {
+    id: "g_adj_na_conjugation",
+    pattern: "な-Adjectives (Present, Past, Negative)",
+    title: "な-Adjective Inflections",
+    level: "N5",
+    meaning: "Is ~ / Is not ~ / Was ~ / Was not ~",
+    formation: "Before Noun: [Stem] + な | Predicate: [Stem] + です / ではありません / でした",
+    explanation:
+      "な-adjectives behave grammatically like nouns. When directly modifying a following noun, they require な (静かな部屋). As sentence predicates, they take the copula です / ではありません / でした.",
+    register: "polite",
+    commonMistakes:
+      "Forgetting な before a noun (e.g. *静か部屋 is wrong; must be 静かな部屋).",
+    usageConditions: [
+      "Add な when placing in front of a noun.",
+      "Drop な before copula forms (静かです).",
+    ],
+    examples: [
+      {
+        japanese: "ここは静かな町です。",
+        furigana: "ここは しず[静]かな まち[町]です。",
+        romaji: "Koko wa shizuka na machi desu.",
+        english: "This is a quiet town.",
+        literalTranslation: "Here as-for quiet town is.",
+        audioText: "ここはしずかなまちです。",
+      },
+      {
+        japanese: "この公園は有名ではありません。",
+        furigana: "この こうえん[公園]は ゆうめい[有名]ではありません。",
+        romaji: "Kono kouen wa yuumei dewa arimasen.",
+        english: "This park is not famous.",
+        literalTranslation: "This park famous is-not.",
+        audioText: "このこうえんはゆうめいではありません。",
+      },
+    ],
+    relatedGrammar: ["g_adj_i_conjugation"],
+  },
+  {
+    id: "g_counters",
+    pattern: "Japanese Counters (助数詞)",
+    title: "Japanese Numeral Counters System",
+    level: "N5",
+    meaning: "Counting objects, people, thin items, and animals",
+    formation: "[Number] + [Counter] (e.g. ひとつ, 二人, 三本, 四枚, 五匹)",
+    explanation:
+      "Japanese numerals require specific counters depending on shape and animacy: つ (general 3D items), 人 (nin/ri, people), 本 (hon/bon/pon, long cylindrical objects), 枚 (mai, flat thin items), 匹 (hiki/biki/piki, small animals).",
+    register: "polite",
+    commonMistakes:
+      "Using native Japanese counters past 10 (つ only goes from ひとつ to とお; 11+ uses regular numbers).",
+    usageConditions: [
+      "Placed either directly before the verb or before the particle with の.",
+      "Note phonetic sound shifts (1本 = いっぽん, 3本 = さんぼん).",
+    ],
+    examples: [
+      {
+        japanese: "ビールを二本ください。",
+        furigana: "ビールを にほん[二本] ください。",
+        romaji: "Biiru o nihon kudasai.",
+        english: "Two bottles of beer, please.",
+        literalTranslation: "Beer two-bottles please.",
+        audioText: "びーるをにほんください。",
+      },
+      {
+        japanese: "猫が三匹います。",
+        furigana: "ねこ[猫]が さんびき[三匹] います。",
+        romaji: "Neko ga sanbiki imasu.",
+        english: "There are three cats.",
+        literalTranslation: "Cats three-small-animals exist.",
+        audioText: "ねこがさんびきいます。",
+      },
+    ],
+    relatedGrammar: ["g_aru_iru", "g_wo_object"],
+  },
+  {
+    id: "g_potential",
+    pattern: "〜ことができる / 〜(ら)れる",
+    title: "Potential Form (Can do / Ability)",
+    level: "N4",
+    meaning: "Can do / Able to do ~",
+    formation: "Dictionary Form + ことができる | Verb Potential Conjugation",
+    explanation:
+      "Expresses ability or possibility. Group 1 verbs replace the final -u sound with -eru (話す $\\to$ 話せる, 書く $\\to$ 書ける). Group 2 replaces -ru with -rareru (食べる $\\to$ 食べられる). In potential constructions, the direct object usually takes が instead of を.",
+    register: "polite",
+    commonMistakes:
+      "Using を instead of が with the potential verb (日本語が話せます is standard, though を is increasingly heard in casual speech).",
+    usageConditions: [
+      "Expresses intrinsic skill, situational capability, or societal permission.",
+    ],
+    examples: [
+      {
+        japanese: "日本語を話すことができます。",
+        furigana: "にほんご[日本語]を はな[話]すことができます。",
+        romaji: "Nihongo o hanasu koto ga dekimasu.",
+        english: "I can speak Japanese.",
+        literalTranslation: "Japanese speaking fact [subject] is-possible.",
+        audioText: "にほんごをはなすことができます。",
+      },
+      {
+        japanese: "漢字が少し読めます。",
+        furigana: "かんじ[漢字]が すこ[少]し よ[読]めます。",
+        romaji: "Kanji ga sukoshi yomemasu.",
+        english: "I can read a little Kanji.",
+        literalTranslation: "Kanji a-little can-read.",
+        audioText: "かんじがすこしよめます。",
+      },
+    ],
+    relatedGrammar: ["g_wo_object", "g_ga_subject"],
+  },
+  {
+    id: "g_passive_causative",
+    pattern: "受身・使役 (Passive & Causative Voices)",
+    title: "Passive 〜られる & Causative 〜させる",
+    level: "N4",
+    meaning: "Is done by (Passive) / Make or let someone do (Causative)",
+    formation: "Passive: [a-stem] + られる | Causative: [a-stem] + させる",
+    explanation:
+      "Passive (受身) indicates an action received by the subject from an agent (marked by に). Often expresses suffering or annoyance in Japanese (adversative passive). Causative (使役) indicates making someone or allowing someone to perform an action.",
+    register: "formal",
+    commonMistakes:
+      "Confusing the particle of the causer and the causee. The person made to do something takes に or を.",
+    usageConditions: [
+      "Passive agent is marked by に.",
+      "Causative-passive (〜させられる) expresses being forced to do something reluctantly.",
+    ],
+    examples: [
+      {
+        japanese: "雨に降られました。",
+        furigana: "あめ[雨]に ふ[降]られました。",
+        romaji: "Ame ni furaremashita.",
+        english: "I got rained on (and suffered from it).",
+        literalTranslation: "By rain was-fallen-upon.",
+        audioText: "あめにふられました。",
+      },
+      {
+        japanese: "先生は学生に宿題をさせました。",
+        furigana: "せんせい[先生]は がくせい[学生]に しゅくだい[宿題]を させました。",
+        romaji: "Sensei wa gakusei ni shukudai o sasemashita.",
+        english: "The teacher made the students do homework.",
+        literalTranslation: "Teacher as-for students to homework made-do.",
+        audioText: "せんせいはがくせいにしゅくだいをさせました。",
+      },
+    ],
+    relatedGrammar: ["g_te_form", "g_potential"],
+  },
+  {
+    id: "g_keigo_basics",
+    pattern: "敬語 (Keigo: Sonkeigo & Kenjougo)",
+    title: "Japanese Politeness Registers: Honorific & Humble",
+    level: "N4",
+    meaning: "Honorific (elevating others) vs Humble (lowering oneself)",
+    formation: "Honorific: お/ご + [Stem] + になる | Humble: お/ご + [Stem] + する",
+    explanation:
+      "Japanese communication is structured by relative social distance (ウチ inside vs ソト outside). 尊敬語 (Sonkeigo) honors the actions of superiors/clients; 謙譲語 (Kenjougo) humbles the speaker's own actions; 丁寧語 (Teineigo) maintains polite baseline speech with です/ます.",
+    register: "formal",
+    commonMistakes:
+      "Using honorific forms for your own family or company actions when speaking to an outside client (Kenjougo must be used for in-group actions).",
+    usageConditions: [
+      "Essential for workplace, business emails, and polite customer interactions.",
+      "Special honorific verbs: いらっしゃる (行く/来る/いる), おっしゃる (言う), なさる (する).",
+      "Special humble verbs: 参る (行く/来る), 申す (言う), 致す (する), いただく (食べる/飲む/もらう).",
+    ],
+    examples: [
+      {
+        japanese: "社長はもうお帰りになりました。",
+        furigana: "しゃちょう[社長]は もう おかえ[帰]りになりました。",
+        romaji: "Shachou wa mou okaeri ni narimashita.",
+        english: "The company president has already returned home.",
+        literalTranslation: "President already returned-honorably became.",
+        audioText: "しゃちょうはもうおかえりになりました。",
+      },
+      {
+        japanese: "明日十時に参ります。",
+        furigana: "あした[明日] じゅうじ[十時]に まい[参]ります。",
+        romaji: "Ashita juuji ni mairimasu.",
+        english: "I will come humbly tomorrow at 10:00.",
+        literalTranslation: "Tomorrow 10 o'clock at come-humbly.",
+        audioText: "あしたじゅうじにまいります。",
+      },
+    ],
+    relatedGrammar: ["g_wa_topic", "g_te_form"],
+  },
+  {
+    id: "g_mo_also",
+    pattern: "〜も (mo)",
+    title: "Inclusive Particle も (Also / Too)",
+    level: "N5",
+    meaning: "Also / too / as well (replaces は, が, を)",
+    formation: "[Noun] + も",
+    explanation:
+      "も directly replaces the topic particle は, subject particle が, or direct object particle を to indicate inclusion. When used with particles like に or で, it attaches after them (にも, でも).",
+    register: "polite",
+    commonMistakes:
+      "Writing *はも or *をも (も completely replaces は and を).",
+    usageConditions: [
+      "Replaces は, が, を directly.",
+      "Follows に, で, から, まで (e.g. 東京でも).",
+    ],
+    examples: [
+      {
+        japanese: "私も学生です。",
+        furigana: "わたし[私]も がくせい[学生]です。",
+        romaji: "Watashi mo gakusei desu.",
+        english: "I am also a student.",
+        literalTranslation: "I also student am.",
+        audioText: "わたしもがくせいです。",
+      },
+      {
+        japanese: "これもおいしいです。",
+        furigana: "これも おいしいです。",
+        romaji: "Kore mo oishii desu.",
+        english: "This is also delicious.",
+        literalTranslation: "This also delicious is.",
+        audioText: "これもおおいしいです。",
+      },
+    ],
+    relatedGrammar: ["g_wa_topic", "g_wo_object"],
+  },
+  {
+    id: "g_no_possession",
+    pattern: "A の B (no)",
+    title: "Possessive & Noun-Linking Particle の",
+    level: "N5",
+    meaning: "A's B / B of A / Noun modifier",
+    formation: "[Noun A] + の + [Noun B]",
+    explanation:
+      "Connects two nouns where Noun A describes, owns, or specifies Noun B. Used for possession (私の本 = my book), origin (日本の車 = Japanese car), and category (日本語の先生 = Japanese language teacher).",
+    register: "polite",
+    commonMistakes:
+      "Forgetting の when connecting two nouns in Japanese (unlike English where nouns can be chained directly like 'Tokyo station' $\\to$ 東京の駅 or 東京駅).",
+    usageConditions: [
+      "Links two nouns together.",
+      "Can replace a noun to mean 'the one' (赤いの = the red one).",
+    ],
+    examples: [
+      {
+        japanese: "これは私の傘です。",
+        furigana: "これは わたし[私]の かさ[傘]です。",
+        romaji: "Kore wa watashi no kasa desu.",
+        english: "This is my umbrella.",
+        literalTranslation: "This as-for my umbrella is.",
+        audioText: "これはわたしのかさです。",
+      },
+      {
+        japanese: "日本の文化は面白いです。",
+        furigana: "にほん[日本]の ぶんか[文化]は おもしろ[面白]いです。",
+        romaji: "Nihon no bunka wa omoshiroi desu.",
+        english: "Japanese culture is interesting.",
+        literalTranslation: "Japan of culture interesting is.",
+        audioText: "にほんのぶんかはおもしろいです。",
+      },
+    ],
+    relatedGrammar: ["g_wa_topic", "g_kore_sore_are"],
   },
 ];

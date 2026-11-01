@@ -177,6 +177,92 @@ export const KATAKANA_CHARACTERS: KanaCharacter[] = [
   { kana: "ワ", romaji: "wa", type: "katakana", category: "gojuon", audioKey: "wa", strokes: 2, mnemonic: "A wine glass cup." },
   { kana: "ヲ", romaji: "wo", type: "katakana", category: "gojuon", audioKey: "wo", strokes: 3, mnemonic: "A person walking on wires." },
   { kana: "ン", romaji: "n", type: "katakana", category: "gojuon", audioKey: "n", strokes: 2, mnemonic: "A Knight smiling upward." },
+
+  // Katakana Dakuten (Voiced: G, Z, D, B)
+  { kana: "ガ", romaji: "ga", type: "katakana", category: "dakuten", audioKey: "ga", strokes: 4, mnemonic: "カ with dakuten marks." },
+  { kana: "ギ", romaji: "gi", type: "katakana", category: "dakuten", audioKey: "gi", strokes: 5, mnemonic: "キ with dakuten marks." },
+  { kana: "グ", romaji: "gu", type: "katakana", category: "dakuten", audioKey: "gu", strokes: 4, mnemonic: "ク with dakuten marks." },
+  { kana: "ゲ", romaji: "ge", type: "katakana", category: "dakuten", audioKey: "ge", strokes: 5, mnemonic: "ケ with dakuten marks." },
+  { kana: "ゴ", romaji: "go", type: "katakana", category: "dakuten", audioKey: "go", strokes: 4, mnemonic: "コ with dakuten marks." },
+  { kana: "ザ", romaji: "za", type: "katakana", category: "dakuten", audioKey: "za", strokes: 5, mnemonic: "サ with dakuten marks." },
+  { kana: "ジ", romaji: "ji", type: "katakana", category: "dakuten", audioKey: "ji", strokes: 5, mnemonic: "シ with dakuten marks." },
+  { kana: "ズ", romaji: "zu", type: "katakana", category: "dakuten", audioKey: "zu", strokes: 4, mnemonic: "ス with dakuten marks." },
+  { kana: "ゼ", romaji: "ze", type: "katakana", category: "dakuten", audioKey: "ze", strokes: 4, mnemonic: "セ with dakuten marks." },
+  { kana: "ゾ", romaji: "zo", type: "katakana", category: "dakuten", audioKey: "zo", strokes: 4, mnemonic: "ソ with dakuten marks." },
+  { kana: "ダ", romaji: "da", type: "katakana", category: "dakuten", audioKey: "da", strokes: 5, mnemonic: "タ with dakuten marks." },
+  { kana: "ヂ", romaji: "ji", type: "katakana", category: "dakuten", audioKey: "dji", strokes: 5, mnemonic: "チ with dakuten marks." },
+  { kana: "ヅ", romaji: "dzu", type: "katakana", category: "dakuten", audioKey: "dzu", strokes: 5, mnemonic: "ツ with dakuten marks." },
+  { kana: "デ", romaji: "de", type: "katakana", category: "dakuten", audioKey: "de", strokes: 5, mnemonic: "テ with dakuten marks." },
+  { kana: "ド", romaji: "do", type: "katakana", category: "dakuten", audioKey: "do", strokes: 4, mnemonic: "ト with dakuten marks." },
+  { kana: "バ", romaji: "ba", type: "katakana", category: "dakuten", audioKey: "ba", strokes: 4, mnemonic: "ハ with dakuten marks." },
+  { kana: "ビ", romaji: "bi", type: "katakana", category: "dakuten", audioKey: "bi", strokes: 4, mnemonic: "ヒ with dakuten marks." },
+  { kana: "ブ", romaji: "bu", type: "katakana", category: "dakuten", audioKey: "bu", strokes: 3, mnemonic: "フ with dakuten marks." },
+  { kana: "ベ", romaji: "be", type: "katakana", category: "dakuten", audioKey: "be", strokes: 3, mnemonic: "ヘ with dakuten marks." },
+  { kana: "ボ", romaji: "bo", type: "katakana", category: "dakuten", audioKey: "bo", strokes: 6, mnemonic: "ホ with dakuten marks." },
+
+  // Katakana Handakuten (Semi-voiced: P)
+  { kana: "パ", romaji: "pa", type: "katakana", category: "handakuten", audioKey: "pa", strokes: 3, mnemonic: "ハ with maru circle." },
+  { kana: "ピ", romaji: "pi", type: "katakana", category: "handakuten", audioKey: "pi", strokes: 3, mnemonic: "ヒ with maru circle." },
+  { kana: "プ", romaji: "pu", type: "katakana", category: "handakuten", audioKey: "pu", strokes: 2, mnemonic: "フ with maru circle." },
+  { kana: "ペ", romaji: "pe", type: "katakana", category: "handakuten", audioKey: "pe", strokes: 2, mnemonic: "ヘ with maru circle." },
+  { kana: "ポ", romaji: "po", type: "katakana", category: "handakuten", audioKey: "po", strokes: 5, mnemonic: "ホ with maru circle." },
+
+  // Katakana Yoon (Contracted Sounds)
+  { kana: "キャ", romaji: "kya", type: "katakana", category: "yoon", audioKey: "kya", strokes: 5, mnemonic: "キ + small ャ" },
+  { kana: "キュ", romaji: "kyu", type: "katakana", category: "yoon", audioKey: "kyu", strokes: 5, mnemonic: "キ + small ュ" },
+  { kana: "キョ", romaji: "kyo", type: "katakana", category: "yoon", audioKey: "kyo", strokes: 6, mnemonic: "キ + small ョ" },
+  { kana: "シャ", romaji: "sha", type: "katakana", category: "yoon", audioKey: "sha", strokes: 5, mnemonic: "シ + small ャ" },
+  { kana: "シュ", romaji: "shu", type: "katakana", category: "yoon", audioKey: "shu", strokes: 5, mnemonic: "シ + small ュ" },
+  { kana: "ショ", romaji: "sho", type: "katakana", category: "yoon", audioKey: "sho", strokes: 6, mnemonic: "シ + small ョ" },
+  { kana: "チャ", romaji: "cha", type: "katakana", category: "yoon", audioKey: "cha", strokes: 5, mnemonic: "チ + small ャ" },
+  { kana: "チュ", romaji: "chu", type: "katakana", category: "yoon", audioKey: "chu", strokes: 5, mnemonic: "チ + small ュ" },
+  { kana: "チョ", romaji: "cho", type: "katakana", category: "yoon", audioKey: "cho", strokes: 6, mnemonic: "チ + small ョ" },
+  { kana: "ニャ", romaji: "nya", type: "katakana", category: "yoon", audioKey: "nya", strokes: 4, mnemonic: "ニ + small ャ" },
+  { kana: "リュ", romaji: "ryu", type: "katakana", category: "yoon", audioKey: "ryu", strokes: 4, mnemonic: "リ + small ュ" },
+  { kana: "リョ", romaji: "ryo", type: "katakana", category: "yoon", audioKey: "ryo", strokes: 5, mnemonic: "リ + small ョ" },
+];
+
+export const KANA_SPECIAL_RULES = [
+  {
+    id: "sokuon",
+    title: "Small Tsu — Geminate Consonants (促音)",
+    japaneseTitle: "促音（っ・ッ）の法則",
+    summary: "The small っ (Hiragana) or ッ (Katakana) represents a full one-beat pause (glottal stop) before consonants k, s, t, p.",
+    ruleExplanation:
+      "Unlike full-size つ/ツ, small っ/ッ produces no vowel. It doubles the following roman consonant: 切符 (きっぷ / ki-p-pu, ticket), もっと (mo-t-to, more), ベッド (be-d-do, bed). In Japanese mora timing, this pause takes exactly the same rhythmic length as any normal kana.",
+    examples: [
+      { japanese: "切符", reading: "きっぷ", romaji: "kippu", english: "ticket", explanation: "Double 'p' with small っ" },
+      { japanese: "雑誌", reading: "ざっし", romaji: "zasshi", english: "magazine", explanation: "Double 's' with small っ" },
+      { japanese: "ベッド", reading: "ベッド", romaji: "beddo", english: "bed", explanation: "Double 'd' with small ッ" },
+      { japanese: "コップ", reading: "コップ", romaji: "koppu", english: "glass / cup", explanation: "Double 'p' with small ッ" },
+    ],
+  },
+  {
+    id: "choonpu",
+    title: "Long Vowel Conventions (長音符 & 長音)",
+    japaneseTitle: "長音の表記ルール",
+    summary: "How prolonged vowels are represented in native Japanese words versus Katakana loanwords.",
+    ruleExplanation:
+      "In Katakana, long vowels are represented by the dash symbol ー (chōonpu): コーヒー (kōhī, coffee), ケーキ (kēki, cake). In Hiragana, long 'o' is written as おう (not おお in 95% of words): ありがとう (arigatō), おとうさん (otōsan). Long 'e' is written as えい: せんせい (sensei).",
+    examples: [
+      { japanese: "コーヒー", reading: "コーヒー", romaji: "kōhī", english: "coffee", explanation: "Katakana uses horizontal dash ー" },
+      { japanese: "お父さん", reading: "おとうさん", romaji: "otōsan", english: "father", explanation: "Hiragana long 'o' spelled with う" },
+      { japanese: "先生", reading: "せんせい", romaji: "sensei", english: "teacher", explanation: "Hiragana long 'e' spelled with い" },
+    ],
+  },
+  {
+    id: "particles",
+    title: "Special Particle Pronunciation (助詞の特例)",
+    japaneseTitle: "助詞「は・へ・を」の発音",
+    summary: "Three kana change their pronunciation when functioning as grammatical particles.",
+    ruleExplanation:
+      "1. は is pronounced 'wa' when marking topic (私は = watashi wa).\n2. へ is pronounced 'e' when marking direction (東京へ = Tōkyō e).\n3. を is pronounced 'o' when marking direct object (水を = mizu o). In modern Japanese, を is only used as a particle.",
+    examples: [
+      { japanese: "私は", reading: "わたしは", romaji: "watashi wa", english: "as for me", explanation: "は pronounced 'wa'" },
+      { japanese: "日本へ", reading: "にほんへ", romaji: "nihon e", english: "to Japan", explanation: "へ pronounced 'e'" },
+      { japanese: "本を読む", reading: "ほんをよむ", romaji: "hon o yomu", english: "to read a book", explanation: "を pronounced 'o'" },
+    ],
+  },
 ];
 
 export const SIMILAR_KANA_PAIRS = [
