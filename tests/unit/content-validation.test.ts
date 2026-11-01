@@ -5,6 +5,7 @@ import { KANJI_DATABASE } from "@/data/kanji";
 import { VOCABULARY_DATABASE } from "@/data/vocabulary";
 import { HIRAGANA_CHARACTERS, KATAKANA_CHARACTERS, SIMILAR_KANA_PAIRS } from "@/data/kana";
 import { STORIES_DATABASE } from "@/data/stories";
+import { AppDataStore } from "@/lib/database/store";
 
 describe("Content Validation & Pedagogical Data Integrity Suite", () => {
   describe("Curriculum Exercises Integrity", () => {
@@ -69,6 +70,7 @@ describe("Content Validation & Pedagogical Data Integrity Suite", () => {
 
   describe("Grammar Database Integrity", () => {
     it("ensures every grammar rule has unique ID, JLPT level, formation, and examples", () => {
+      expect(GRAMMAR_DATABASE.length).toBeGreaterThanOrEqual(20);
       const ids = new Set<string>();
       GRAMMAR_DATABASE.forEach((entry) => {
         expect(ids.has(entry.id), `Duplicate grammar ID: ${entry.id}`).toBe(false);
@@ -91,7 +93,7 @@ describe("Content Validation & Pedagogical Data Integrity Suite", () => {
 
   describe("Kanji Database Integrity", () => {
     it("ensures all kanji items have valid characters, readings, and stroke counts", () => {
-      expect(KANJI_DATABASE.length).toBeGreaterThanOrEqual(15);
+      expect(KANJI_DATABASE.length).toBeGreaterThanOrEqual(40);
 
       KANJI_DATABASE.forEach((kanji) => {
         expect(kanji.character.trim().length).toBe(1);
@@ -99,13 +101,14 @@ describe("Content Validation & Pedagogical Data Integrity Suite", () => {
         expect(kanji.strokes).toBeGreaterThanOrEqual(1);
         expect(kanji.onyomi.length + kanji.kunyomi.length).toBeGreaterThanOrEqual(1);
         expect(["N5", "N4", "N3", "N2", "N1"]).toContain(kanji.jlpt);
+        expect(kanji.examples.length).toBeGreaterThanOrEqual(2);
       });
     });
   });
 
   describe("Vocabulary Database Integrity", () => {
     it("ensures all vocabulary items have word, reading, meaning, and part of speech", () => {
-      expect(VOCABULARY_DATABASE.length).toBeGreaterThanOrEqual(25);
+      expect(VOCABULARY_DATABASE.length).toBeGreaterThanOrEqual(45);
 
       VOCABULARY_DATABASE.forEach((vocab) => {
         expect(vocab.id.trim().length).toBeGreaterThan(0);
@@ -127,13 +130,20 @@ describe("Content Validation & Pedagogical Data Integrity Suite", () => {
       });
     });
 
-    it("contains standard katakana coverage (a through n)", () => {
-      expect(KATAKANA_CHARACTERS.length).toBeGreaterThanOrEqual(46);
+    it("contains standard katakana coverage across gojuon, dakuten, handakuten, and yoon", () => {
+      expect(KATAKANA_CHARACTERS.length).toBeGreaterThanOrEqual(75);
       const essentialKatakana = ["ア", "イ", "ウ", "エ", "オ", "カ", "サ", "タ", "ナ", "ハ", "マ", "ヤ", "ラ", "ワ", "ン"];
       const katakanaSet = new Set(KATAKANA_CHARACTERS.map((k) => k.kana));
       essentialKatakana.forEach((k) => {
         expect(katakanaSet.has(k), `Missing essential katakana: ${k}`).toBe(true);
       });
+
+      // Verify dakuten, handakuten, and yoon presence (DEFECT-01 fix)
+      const categories = new Set(KATAKANA_CHARACTERS.map((k) => k.category));
+      expect(categories.has("gojuon")).toBe(true);
+      expect(categories.has("dakuten")).toBe(true);
+      expect(categories.has("handakuten")).toBe(true);
+      expect(categories.has("yoon")).toBe(true);
     });
 
     it("contains confused kana pairs with distinct visual/mnemonic comparisons", () => {
@@ -158,6 +168,31 @@ describe("Content Validation & Pedagogical Data Integrity Suite", () => {
         });
         expect(story.questions.length).toBeGreaterThanOrEqual(1);
       });
+    });
+  });
+
+  describe("Data Backup & Restore Engine (DEFECT-06)", () => {
+    it("exports valid JSON with bundle metadata and data sections", () => {
+      const store = AppDataStore.getInstance();
+      const exported = store.exportUserDataJson();
+      const parsed = JSON.parse(exported);
+      expect(parsed.version).toBe("1.0");
+      expect(parsed.appName).toBe("NekoNihongo");
+      expect(parsed.data).toBeDefined();
+    });
+
+    it("gracefully catches and rejects malformed JSON on import", () => {
+      const store = AppDataStore.getInstance();
+      const res = store.importUserDataJson("{ invalid json");
+      expect(res.success).toBe(false);
+      expect(res.error).toBeDefined();
+    });
+
+    it("rejects payload missing root data object", () => {
+      const store = AppDataStore.getInstance();
+      const res = store.importUserDataJson(JSON.stringify({ notData: true }));
+      expect(res.success).toBe(false);
+      expect(res.error).toContain("missing root data object");
     });
   });
 });

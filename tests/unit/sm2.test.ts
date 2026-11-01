@@ -31,10 +31,22 @@ describe("SM-2 Spaced Repetition Engine", () => {
   });
 
   it("should reset repetitions to 0 and interval to 1 on failure (grade < 3)", () => {
-    const res = calculateSM2(2, 5, 30, 2.6, new Date("2026-10-19T12:00:00Z"));
+    const res = calculateSM2(2, 5, 30, 2.6, new Date("2026-10-19T12:00:00Z"), 0);
     expect(res.repetitions).toBe(0);
     expect(res.intervalDays).toBe(1);
     expect(res.masteryLevel).toBe("learning");
+    expect(res.lapses).toBe(1);
+  });
+
+  it("should increment lapses count upon forgetting previously learned cards", () => {
+    // Grade 0 = complete blackout
+    const res0 = calculateSM2(0, 3, 10, 2.5, new Date("2026-10-19T12:00:00Z"), 2);
+    expect(res0.lapses).toBe(3);
+    expect(res0.repetitions).toBe(0);
+
+    // Initial learning failure (repetitions === 0) should not count as a lapse of memory
+    const resInitial = calculateSM2(1, 0, 0, 2.5, new Date("2026-10-19T12:00:00Z"), 0);
+    expect(resInitial.lapses).toBe(0);
   });
 
   it("should never let ease factor drop below 1.3", () => {
