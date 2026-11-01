@@ -3,10 +3,11 @@
 import React, { useState } from "react";
 import { useApp } from "@/lib/providers/state-context";
 import { JapaneseAudioSynthesizer } from "@/lib/audio/speech";
-import { Volume2, Play, CheckCircle2, XCircle, RotateCcw, Sparkles } from "lucide-react";
+import { Volume2, Play, Sparkles, Info } from "lucide-react";
 
 interface ListeningDrill {
   id: string;
+  category: "travel" | "dining" | "time" | "daily" | "shopping" | "health";
   audioText: string;
   question: string;
   options: string[];
@@ -17,27 +18,133 @@ interface ListeningDrill {
 const LISTENING_DRILLS: ListeningDrill[] = [
   {
     id: "l_1",
-    audioText: "明日は東京へ行きます。",
-    question: "Where is the speaker going tomorrow?",
-    options: ["Tokyo (東京)", "Kyoto (京都)", "Osaka (大阪)", "School (学校)"],
+    category: "travel",
+    audioText: "明日は東京へ新幹線で行きます。",
+    question: "Where is the speaker traveling tomorrow, and by what mode of transportation?",
+    options: [
+      "Tokyo by Shinkansen (bullet train)",
+      "Kyoto by airplane",
+      "Osaka by local train",
+      "Tokyo by long-distance bus",
+    ],
     correctAnswer: 0,
-    explanation: "The speaker said: '明日は東京へ行きます' (Tomorrow I go to Tokyo).",
+    explanation: "Transcript: '明日は東京へ新幹線で行きます' (Tomorrow I am going to Tokyo by Shinkansen).",
   },
   {
     id: "l_2",
-    audioText: "冷たい水を一杯ください。",
-    question: "What beverage did the speaker ask for?",
-    options: ["Hot green tea", "Cold water (冷たい水)", "Black coffee", "Cold milk"],
+    category: "dining",
+    audioText: "すみません、冷たい水を二杯ください。",
+    question: "What beverage did the speaker order, and in what quantity?",
+    options: [
+      "One cup of hot tea",
+      "Two glasses of cold water (冷たい水 二杯)",
+      "Two bottles of beer",
+      "One glass of iced water",
+    ],
     correctAnswer: 1,
-    explanation: "The speaker requested: '冷たい水を一杯ください' (One glass of cold water, please).",
+    explanation: "Transcript: 'すみません、冷たい水を二杯ください' (Excuse me, two glasses of cold water please). Note: 杯 (hai) is the liquid glass/cup counter.",
   },
   {
     id: "l_3",
+    category: "time",
     audioText: "今、何時ですか。七時半です。",
-    question: "What time was reported?",
+    question: "What time was stated by the speaker?",
     options: ["6:30", "7:00", "7:30 (七時半)", "8:30"],
     correctAnswer: 2,
-    explanation: "七時半 (shichiji-han) translates to 7:30.",
+    explanation: "Transcript: '今、何時ですか。七時半です' (What time is it now? It is 7:30). '半' (han) means half past.",
+  },
+  {
+    id: "l_4",
+    category: "shopping",
+    audioText: "この辞書は三千円です。",
+    question: "What is the price of the dictionary mentioned?",
+    options: ["300 yen", "1,300 yen", "3,000 yen (三千円)", "30,000 yen"],
+    correctAnswer: 2,
+    explanation: "Transcript: 'この辞書は三千円です' (This dictionary is 3,000 yen). Note that 3,000 voices to 'sanzen'.",
+  },
+  {
+    id: "l_5",
+    category: "daily",
+    audioText: "毎朝六時半に起きて、ジョギングをします。",
+    question: "What does the speaker do every morning?",
+    options: [
+      "Wakes up at 6:30 and goes jogging",
+      "Wakes up at 7:00 and reads news",
+      "Goes to sleep at 6:30 AM",
+      "Eats breakfast at 6:30 with family",
+    ],
+    correctAnswer: 0,
+    explanation: "Transcript: '毎朝六時半に起きて、ジョギングをします' (Every morning I wake up at 6:30 and jog).",
+  },
+  {
+    id: "l_6",
+    category: "travel",
+    audioText: "京都駅の前に大きなホテルがあります。",
+    question: "What is located in front of Kyoto Station?",
+    options: [
+      "A small cafe",
+      "A large hotel (大きなホテル)",
+      "An old temple",
+      "A department store",
+    ],
+    correctAnswer: 1,
+    explanation: "Transcript: '京都駅の前に大きなホテルがあります' (There is a big hotel in front of Kyoto Station).",
+  },
+  {
+    id: "l_7",
+    category: "daily",
+    audioText: "私の家には可愛い猫が二匹います。",
+    question: "What pets live at the speaker's home?",
+    options: [
+      "One cute dog",
+      "Two cute cats (猫が二匹)",
+      "Three birds",
+      "Two large dogs",
+    ],
+    correctAnswer: 1,
+    explanation: "Transcript: '私の家には可愛い猫が二匹います' (At my home, there are two cute cats). Note: 匹 (hiki) is the small animal counter.",
+  },
+  {
+    id: "l_8",
+    category: "health",
+    audioText: "食後にこの薬を二錠飲んでください。",
+    question: "When and how much medicine should be taken?",
+    options: [
+      "Before meals, one tablet",
+      "After meals, two tablets (食後 二錠)",
+      "Before sleep, two tablets",
+      "In the morning, one liquid dose",
+    ],
+    correctAnswer: 1,
+    explanation: "Transcript: '食後にこの薬を二錠飲んでください' (Please take two tablets of this medicine after meals). 錠 (jou) is the pill counter.",
+  },
+  {
+    id: "l_9",
+    category: "daily",
+    audioText: "この傘を使ってもいいですか。",
+    question: "What is the speaker asking for?",
+    options: [
+      "Permission to use this umbrella",
+      "Where to purchase an umbrella",
+      "Who owns this umbrella",
+      "If the rain has stopped",
+    ],
+    correctAnswer: 0,
+    explanation: "Transcript: 'この傘を使ってもいいですか' (May I use this umbrella?). Uses te-form + もいいですか for polite permission.",
+  },
+  {
+    id: "l_10",
+    category: "travel",
+    audioText: "明日の午後は雨が降るでしょう。",
+    question: "What is the weather forecast for tomorrow afternoon?",
+    options: [
+      "It will likely rain in the afternoon",
+      "It will be clear and sunny all day",
+      "It will snow heavily tomorrow night",
+      "Strong typhoon winds in the morning",
+    ],
+    correctAnswer: 0,
+    explanation: "Transcript: '明日の午後は雨が降るでしょう' (It will probably rain tomorrow afternoon).",
   },
 ];
 
@@ -80,38 +187,52 @@ export default function ListeningPage() {
         </p>
       </div>
 
-      {/* Speed Controls */}
-      <div className="flex items-center justify-between p-4 rounded-2xl bg-surface border border-border shadow-card">
-        <div className="text-xs font-bold text-ink flex items-center gap-2">
-          <Volume2 className="w-4 h-4 text-primary" />
-          <span>Speech Speed:</span>
+      {/* Speed Controls & Synthetic Speech Disclosure */}
+      <div className="space-y-3">
+        <div className="flex items-center justify-between p-4 rounded-2xl bg-surface border border-border shadow-card">
+          <div className="text-xs font-bold text-ink flex items-center gap-2">
+            <Volume2 className="w-4 h-4 text-primary" />
+            <span>Speech Speed:</span>
+          </div>
+          <div className="flex gap-2">
+            {[0.75, 1.0, 1.25].map((speed) => (
+              <button
+                key={speed}
+                onClick={() => {
+                  setPlaybackSpeed(speed);
+                  updatePreferences({ audioSpeed: speed });
+                }}
+                className={`px-3 py-1 rounded-xl text-xs font-bold border transition-all ${
+                  playbackSpeed === speed
+                    ? "bg-primary text-white border-primary shadow-soft"
+                    : "bg-card border-border text-subtle hover:bg-subtle"
+                }`}
+              >
+                {speed}x
+              </button>
+            ))}
+          </div>
         </div>
-        <div className="flex gap-2">
-          {[0.75, 1.0, 1.25].map((speed) => (
-            <button
-              key={speed}
-              onClick={() => {
-                setPlaybackSpeed(speed);
-                updatePreferences({ audioSpeed: speed });
-              }}
-              className={`px-3 py-1 rounded-xl text-xs font-bold border transition-all ${
-                playbackSpeed === speed
-                  ? "bg-primary text-white border-primary shadow-soft"
-                  : "bg-card border-border text-subtle hover:bg-subtle"
-              }`}
-            >
-              {speed}x
-            </button>
-          ))}
+
+        <div className="p-3 rounded-2xl bg-subtle border border-border flex items-start gap-2.5 text-xs text-subtle">
+          <Info className="w-4 h-4 text-primary flex-shrink-0 mt-0.5" />
+          <p className="leading-relaxed text-[11px]">
+            <strong>Audio Synthesis Disclosure:</strong> Audio snippets are generated dynamically via client-side Web Speech Synthesis conforming to Japanese phoneme rules. Pitch accents may vary according to your operating system&apos;s installed Japanese voice engine.
+          </p>
         </div>
       </div>
 
       {/* Interactive Drill Card */}
       <div className="bg-surface border border-border rounded-3xl p-6 sm:p-10 shadow-card text-center space-y-8">
         <div className="space-y-4">
-          <span className="text-xs font-bold px-3 py-1 rounded-full bg-subtle text-subtle">
-            Question {currentIdx + 1} of {LISTENING_DRILLS.length}
-          </span>
+          <div className="flex items-center justify-center gap-2">
+            <span className="text-xs font-bold px-3 py-1 rounded-full bg-subtle text-subtle">
+              Question {currentIdx + 1} of {LISTENING_DRILLS.length}
+            </span>
+            <span className="text-[10px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-primary-light text-primary">
+              {drill.category}
+            </span>
+          </div>
 
           {/* Large Audio Play Button */}
           <button

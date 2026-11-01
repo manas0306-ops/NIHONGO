@@ -1,13 +1,48 @@
 "use client";
 
-import React from "react";
+import React, { useRef, useState } from "react";
 import { useApp } from "@/lib/providers/state-context";
 import { ThemeId, ColorMode } from "@/types";
-import { Palette, Volume2, Type, Moon, Sun, Check, Sparkles, Monitor, Keyboard } from "lucide-react";
+import { Palette, Volume2, Type, Moon, Sun, Check, Sparkles, Monitor, Keyboard, Download, Upload, Database, CheckCircle2 } from "lucide-react";
 import { DayNightToggle } from "@/components/navigation/day-night-toggle";
+import { AppDataStore } from "@/lib/database/store";
 
 export default function SettingsPage() {
   const { preferences, updatePreferences } = useApp();
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const [importStatus, setImportStatus] = useState<string | null>(null);
+
+  const handleExportBackup = () => {
+    const store = AppDataStore.getInstance();
+    const jsonStr = store.exportUserDataJson();
+    const blob = new Blob([jsonStr], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `nekonihongo_backup_${new Date().toISOString().split("T")[0]}.json`;
+    a.click();
+    URL.revokeObjectURL(url);
+    setImportStatus("Backup exported successfully!");
+    setTimeout(() => setImportStatus(null), 4000);
+  };
+
+  const handleFileImport = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      const text = event.target?.result as string;
+      const store = AppDataStore.getInstance();
+      const res = store.importUserDataJson(text);
+      if (res.success) {
+        setImportStatus("Backup imported successfully! Reloading...");
+        setTimeout(() => window.location.reload(), 1200);
+      } else {
+        setImportStatus(`Import error: ${res.error}`);
+      }
+    };
+    reader.readAsText(file);
+  };
 
   const themes: {
     id: ThemeId;
@@ -358,6 +393,56 @@ export default function SettingsPage() {
               ))}
             </div>
           </div>
+        </div>
+      </div>
+
+      {/* 4. Data Management & Local-First Backups */}
+      <div className="p-6 sm:p-8 rounded-3xl bg-surface border border-border shadow-card space-y-5">
+        <div className="flex items-center justify-between border-b border-border pb-3">
+          <div className="flex items-center gap-2 font-bold text-base text-ink">
+            <Database className="w-5 h-5 text-primary" />
+            <span>Local-First Data Backup & Portability</span>
+          </div>
+          <span className="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-emerald-500/10 text-emerald-600">
+            Offline & Private
+          </span>
+        </div>
+
+        <p className="text-xs text-subtle leading-relaxed">
+          NekoNihongo operates with a local-first engine. All progress, SRS retention schedules, and customization remain private on your device. Export backups as JSON to migrate to another device or restore previous states.
+        </p>
+
+        {importStatus && (
+          <div className="p-3.5 rounded-2xl bg-primary-light/50 border border-primary/30 text-xs font-semibold text-primary flex items-center gap-2">
+            <CheckCircle2 className="w-4 h-4" />
+            <span>{importStatus}</span>
+          </div>
+        )}
+
+        <div className="flex flex-col sm:flex-row gap-3 pt-1">
+          <button
+            onClick={handleExportBackup}
+            className="flex-1 py-3 px-4 rounded-2xl bg-primary hover:bg-primary-hover text-white font-bold text-xs flex items-center justify-center gap-2 shadow-soft transition-all"
+          >
+            <Download className="w-4 h-4" />
+            <span>Export Progress Backup (JSON)</span>
+          </button>
+
+          <input
+            type="file"
+            ref={fileInputRef}
+            onChange={handleFileImport}
+            accept=".json,application/json"
+            className="hidden"
+          />
+
+          <button
+            onClick={() => fileInputRef.current?.click()}
+            className="flex-1 py-3 px-4 rounded-2xl border border-border bg-card hover:bg-subtle text-ink font-bold text-xs flex items-center justify-center gap-2 shadow-soft transition-all"
+          >
+            <Upload className="w-4 h-4 text-primary" />
+            <span>Restore Backup File</span>
+          </button>
         </div>
       </div>
     </div>

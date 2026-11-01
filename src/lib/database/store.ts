@@ -130,8 +130,16 @@ export class AppDataStore {
       item.repetitions,
       item.intervalDays,
       item.easeFactor,
-      new Date()
+      new Date(),
+      item.lapses || 0
     );
+
+    const historyEntry = {
+      date: new Date().toISOString(),
+      grade,
+      interval: result.intervalDays,
+      easeFactor: result.easeFactor,
+    };
 
     const updated: SRSItem = {
       ...item,
@@ -142,6 +150,8 @@ export class AppDataStore {
       lastReviewedDate: new Date().toISOString(),
       correctCount: grade >= 3 ? item.correctCount + 1 : item.correctCount,
       incorrectCount: grade < 3 ? item.incorrectCount + 1 : item.incorrectCount,
+      lapses: result.lapses,
+      history: [...(item.history || []), historyEntry].slice(-20),
       masteryLevel: result.masteryLevel,
     };
 
@@ -380,6 +390,47 @@ export class AppDataStore {
     });
 
     return { success: true, duplicate: false, updatedState };
+  }
+
+  // Export all user data as formatted JSON
+  public exportUserDataJson(): string {
+    const exportBundle = {
+      version: "1.0",
+      exportedAt: new Date().toISOString(),
+      appName: "NekoNihongo",
+      data: {
+        preferences: this.loadPreferences(),
+        gamification: this.loadGamificationState(),
+        srsItems: this.loadSRSItems(),
+        quests: this.loadQuests(),
+        achievements: this.loadAchievements(),
+        learnerModel: this.loadLearnerModel(),
+      },
+    };
+    return JSON.stringify(exportBundle, null, 2);
+  }
+
+  // Import and validate user data JSON
+  public importUserDataJson(jsonString: string): { success: boolean; error?: string } {
+    try {
+      const parsed = JSON.parse(jsonString);
+      if (!parsed || typeof parsed !== "object" || !parsed.data) {
+        return { success: false, error: "Invalid backup format: missing root data object" };
+      }
+      const { preferences, gamification, srsItems, quests, achievements, learnerModel } = parsed.data;
+
+      if (preferences && typeof preferences === "object") this.savePreferences(preferences);
+      if (gamification && typeof gamification === "object") this.saveGamificationState(gamification);
+      if (Array.isArray(srsItems)) this.saveSRSItems(srsItems);
+      if (Array.isArray(quests)) this.saveQuests(quests);
+      if (Array.isArray(achievements)) this.saveAchievements(achievements);
+      if (learnerModel && typeof learnerModel === "object") this.saveLearnerModel(learnerModel);
+
+      return { success: true };
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : String(err);
+      return { success: false, error: `JSON parsing error: ${msg}` };
+    }
   }
 
   // Reset progress with confirmation

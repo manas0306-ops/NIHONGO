@@ -99,7 +99,7 @@ export default function ReviewCenterPage() {
       } else if (isFlipped) {
         if (e.key === "1") {
           e.preventDefault();
-          handleGrade(1);
+          handleGrade(0);
         } else if (e.key === "2") {
           e.preventDefault();
           handleGrade(3);
@@ -208,7 +208,7 @@ export default function ReviewCenterPage() {
               </span>
               <div className="grid grid-cols-4 gap-2">
                 <button
-                  onClick={() => handleGrade(1)}
+                  onClick={() => handleGrade(0)}
                   className="py-3 px-2 rounded-xl border border-rose-500/30 bg-rose-500/10 hover:bg-rose-500/20 text-rose-700 dark:text-rose-300 font-bold text-xs flex flex-col items-center gap-0.5 transition-all"
                 >
                   <span>Forgot</span>
